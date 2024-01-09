@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.menu-container {
+  height: calc(100% - 64px) !important;
+}
+
+.rounded-inherit{
+  border-radius: inherit !important;
+}
