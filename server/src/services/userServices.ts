@@ -3,8 +3,8 @@ import { UserDTO } from "../@types/User";
 import { prismaClient } from "../prisma/client";
 import { hash } from "bcrypt";
 
-class UserServices {
-  async createUser(userDTO: UserDTO) {
+export class UserService {
+  static async createUser(userDTO: UserDTO) {
     const hashedPassword = await hash(userDTO.password, 10);
 
     const userData = {
@@ -22,7 +22,7 @@ class UserServices {
     });
   }
 
-  async existByEmailOrCellphone(email?: string, cellphone?: string) {
+  static async existByEmailOrCellphone(email: string, cellphone: string) {
     return await prismaClient.user.findFirst({
       where: {
         OR: [
