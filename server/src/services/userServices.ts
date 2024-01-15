@@ -22,17 +22,33 @@ export class UserService {
     });
   }
 
-  static async existByEmailOrCellphone(email: string, cellphone: string) {
+  // static async existByEmailOrCellphone(email: string, cellphone: string) {
+  //   return await prismaClient.user.findFirst({
+  //     where: {
+  //       OR: [
+  //         {
+  //           cellphone,
+  //         },
+  //         {
+  //           email,
+  //         },
+  //       ],
+  //     },
+  //   });
+  // }
+
+  static async existsByEmail(email: string) {
     return await prismaClient.user.findFirst({
       where: {
-        OR: [
-          {
-            cellphone,
-          },
-          {
-            email,
-          },
-        ],
+        email,
+      },
+    });
+  }
+
+  static async existsByCellphone(cellphone: string) {
+    return await prismaClient.user.findFirst({
+      where: {
+        cellphone,
       },
     });
   }
