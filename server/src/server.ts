@@ -1,24 +1,16 @@
-import { fastify } from "fastify";
-import cors from "@fastify/cors";
-import pino from "pino";
-import { AuthRoutes } from "./routes/authRoutes";
+import express from "express";
+import cors from "cors";
+import { AuthRoutes } from "./routes/AuthRoutes";
+
+const app = express();
+
+app.use(express.json());
+app.use(cors());
+
+app.use(AuthRoutes);
 
 const PORT: number | undefined = Number(process.env.port) || 3333;
-const app = fastify({
-  logger: pino({ level: "info" }),
+
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`);
 });
-
-app.register(cors);
-app.register(AuthRoutes);
-
-const start = async () => {
-  try {
-    await app.listen({ port: PORT });
-    console.log("Server started Sucessfully");
-  } catch (e) {
-    app.log.error(e);
-    process.exit(1);
-  }
-};
-
-start();

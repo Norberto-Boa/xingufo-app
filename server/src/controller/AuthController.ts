@@ -1,26 +1,27 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { Request, Response } from "express";
 import { UserService } from "../services/userServices";
 import { UserDTO } from "../@types/User";
+import { createUserValidator } from "../validators/User/createUserValidator";
 
 export async function register(
-  req: FastifyRequest<{ Body: UserDTO }>,
-  reply: FastifyReply
+  req: Request,
+  res: Response
 ) {
-  const userAlreadyExists = await UserService.existByEmailOrCellphone(
-    req.body.email,
-    req.body.cellphone
+  const { name, email, password, cellphone } = createUserValidator.parse(
+    req.body
   );
 
-  if (userAlreadyExists) {
-    reply.code(403).send({ message: "Credentials already in use" });
-  }
+  const userAlreadyExists = await UserService.existByEmailOrCellphone(
+    email,
+    cellphone
+  );
 
   await UserService.createUser({
-    name: req.body.name,
-    email: req.body.email,
-    cellphone: req.body.cellphone,
-    password: req.body.password,
+    name: name,
+    email: email,
+    cellphone: cellphone,
+    password: password,
   });
 
-  return reply.code(201).send({ message: "User sucessfully created" });
+  return res.send({ message: "User sucessfully created" });
 }

@@ -1,8 +1,8 @@
-import { FastifyInstance } from "fastify";
+import { Router } from "express";
 import { register } from "../controller/AuthController";
 
-async function AuthRoutes(app: FastifyInstance) {
-  app.post("/signup", register);
-}
+const AuthRoutes = Router();
+
+AuthRoutes.post("/register", register);
 
 export { AuthRoutes };
