@@ -7,3 +7,7 @@ export function generateAccessToken(name: string, email: string) {
     expiresIn: "2h",
   });
 }
+
+// export function generateRefreshToken(oldRefreshToken: string) {
+//   const checkRefreshToken 
+// }
