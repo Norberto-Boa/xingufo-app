@@ -3,10 +3,7 @@ import { UserService } from "../services/userServices";
 import { UserDTO } from "../@types/User";
 import { createUserValidator } from "../validators/User/createUserValidator";
 
-export async function register(
-  req: Request,
-  res: Response
-) {
+export async function register(req: Request, res: Response) {
   const { name, email, password, cellphone } = createUserValidator.parse(
     req.body
   );
@@ -15,6 +12,10 @@ export async function register(
     email,
     cellphone
   );
+
+  if (userAlreadyExists) {
+    throw new Error(`User with these credentials already exists`);
+  }
 
   await UserService.createUser({
     name: name,
