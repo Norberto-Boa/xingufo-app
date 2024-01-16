@@ -46,7 +46,7 @@ export async function login(req: Request, res: Response) {
   }
 
   // Generate the token
-  const token = generateAccessToken(email, password);
+  const token = generateAccessToken(user.name, email);
 
   return res.status(200).json({
     message: "Login Sucessfully Done",
