@@ -12,12 +12,20 @@ export default function Dashboard() {
   let decoded;
   if (token) {
     decoded = verify(token.value, "Mena") as JwtPayload;
-    console.log(decoded);
   }
 
   return (
     <div>
-      <p>{decoded?.name}</p>
+      {/* Titutlo */}
+      <div className="pt-8 pl-9">
+        <h1 className="text-2xl font-semibold">
+          Bem-vindo,{" "}
+          <span className="text-emerald-600 font-bold">{decoded?.name}</span>
+        </h1>
+        <span className="mt-8 text-lg text-zinc-500 text-semibold">
+          Conecte-se com os seus colegas
+        </span>
+      </div>
     </div>
   );
 }

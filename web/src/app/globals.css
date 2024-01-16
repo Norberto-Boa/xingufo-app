@@ -25,3 +25,11 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.menu-container {
+  height: calc(100% - 64px) !important;
+}
+
+.rounded-inherit{
+  border-radius: inherit !important;
+}
