@@ -1,7 +1,10 @@
 "use client";
 import Input from "@/components/input";
+import { baseUrl } from "@/ultils/BaseUrl";
 import { ErrorMessage, Form, Formik, FormikErrors } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface FormValues {
   name: string;
@@ -9,6 +12,17 @@ interface FormValues {
   password: string;
   confirmPassword: string;
   cellphone: string;
+}
+
+interface Error {
+  message: string;
+}
+
+interface ApiError {
+  error: {
+    status: string;
+    message: string;
+  };
 }
 
 const validate = ({
@@ -55,12 +69,52 @@ const validate = ({
 };
 
 export default function Register() {
+  const [apiErrors, setApiErrors] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const router = useRouter();
+
   const initialValues: FormValues = {
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
     cellphone: "",
+  };
+
+  const handleSubmit = async ({
+    name,
+    email,
+    password,
+    cellphone,
+  }: FormValues) => {
+    try {
+      setIsSubmitting(true);
+      const req = await fetch(baseUrl + "signup", {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+          cellphone: cellphone,
+        }),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      if (req.ok) {
+        router.push("/login");
+      } else {
+        const res: ApiError = await req.json();
+        throw new Error(res.error.message);
+      }
+    } catch (e: any) {
+      console.log(e);
+      setApiErrors(e.message);
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 1000);
+    }
   };
 
   return (
@@ -72,12 +126,15 @@ export default function Register() {
           Insira os teus dados para fazer parte da nossa plataforma
         </span>
       </div>
-
+      {/* API Error */}
+      {apiErrors ? (
+        <div className="text-red-500 mb-2">{apiErrors}</div>
+      ) : null}{" "}
       <Formik
         initialValues={initialValues}
         validate={validate}
         onSubmit={(values, actions) => {
-          alert(JSON.stringify(values, null, 2));
+          handleSubmit(values);
           actions.setSubmitting(false);
         }}
       >
@@ -145,13 +202,13 @@ export default function Register() {
 
           <button
             type="submit"
-            className="w-full bg-emerald-500 uppercase font-bold py-3 rounded transition-all hover:bg-emerald-600 mt-4"
+            disabled={isSubmitting ? true : false}
+            className="w-full bg-emerald-500 uppercase font-bold py-3 rounded transition-all hover:bg-emerald-600 mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             Cadastrar-se
           </button>
         </Form>
       </Formik>
-
       <div>
         <p className="text-center">
           Já tem uma conta? Faça o{" "}
