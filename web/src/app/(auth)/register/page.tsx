@@ -1,6 +1,7 @@
 "use client";
+import { ApiError } from "@/@types/global";
 import Input from "@/components/input";
-import { baseUrl } from "@/ultils/BaseUrl";
+import { baseUrl } from "@/utils/BaseUrl";
 import { ErrorMessage, Form, Formik, FormikErrors } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,17 +13,6 @@ interface FormValues {
   password: string;
   confirmPassword: string;
   cellphone: string;
-}
-
-interface Error {
-  message: string;
-}
-
-interface ApiError {
-  error: {
-    status: string;
-    message: string;
-  };
 }
 
 const validate = ({

@@ -6,7 +6,6 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error(error);
   return res.status(500).json({
     error,
   });

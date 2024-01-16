@@ -1,11 +1,21 @@
 "use client";
 import Input from "@/components/input";
+import { baseUrl } from "@/utils/BaseUrl";
 import { ErrorMessage, Form, Formik, FormikErrors } from "formik";
 import Link from "next/link";
+import { ApiError } from "@/@types/global";
+import { useState } from "react";
+import { setCookie } from "nookies";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   email: string;
   password: string;
+}
+
+interface LoginSuccess {
+  message: string;
+  token: string;
 }
 
 const validate = ({ email, password }: FormValues) => {
@@ -25,13 +35,45 @@ const validate = ({ email, password }: FormValues) => {
   return errors;
 };
 
+// Function
 export default function Register() {
+  const [apiErrors, setApiErrors] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const router = useRouter();
+
   const initialValues: FormValues = {
     email: "",
     password: "",
   };
 
-  // const formik = useFormik()
+  const handleSubmit = async ({ email, password }: FormValues) => {
+    setIsSubmitting(true);
+    setApiErrors("");
+    try {
+      const req = await fetch(baseUrl + "login", {
+        method: "POST",
+        body: JSON.stringify({ email: email, password: password }),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      if (req.ok) {
+        setIsSubmitting(false);
+        const successResponse: LoginSuccess = await req.json();
+        setCookie(undefined, "auth.token", await successResponse.token);
+        router.push("dashboard");
+      } else {
+        const errorMessage: ApiError = await req.json();
+        throw new Error(errorMessage.error.message);
+      }
+    } catch (e: any) {
+      setTimeout(() => {
+        setApiErrors(e.message);
+        setIsSubmitting(false);
+      }, 1000);
+    }
+  };
 
   return (
     <div className="py-4 px-5 dark:bg-zinc-900 rounded-lg border dark:border-zinc-800 flex flex-col w-[420px]">
@@ -48,7 +90,7 @@ export default function Register() {
         initialValues={initialValues}
         validate={validate}
         onSubmit={(values, actions) => {
-          alert(JSON.stringify(values, null, 2));
+          handleSubmit(values);
           actions.setSubmitting(false);
         }}
       >
@@ -66,7 +108,7 @@ export default function Register() {
           </div>
           {/* Input Container */}
           <Input
-            type="text"
+            type="password"
             id="password"
             name="password"
             placeholder="Password"
@@ -75,10 +117,13 @@ export default function Register() {
           <div className="text-red-400">
             <ErrorMessage name="password" />
           </div>
-
+          {apiErrors ? (
+            <div className="mb-2 text-red-400">{apiErrors}</div>
+          ) : null}
           <button
             type="submit"
-            className="w-full bg-emerald-500 uppercase font-bold py-3 rounded transition-all hover:bg-emerald-600 mt-4"
+            disabled={isSubmitting}
+            className="w-full bg-emerald-500 uppercase font-bold py-3 rounded transition-all hover:bg-emerald-600 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
           >
             Login
           </button>
