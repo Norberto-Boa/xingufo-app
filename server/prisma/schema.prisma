@@ -52,6 +52,7 @@ model Team {
 }
 
 model Game {
+  id         Int      @id @default(autoincrement())
   location   String
   homeTeamId String
   awayTeamId String
@@ -60,7 +61,18 @@ model Game {
   status     Status
   createdAt  DateTime @db.Timestamp()
   updatedAt  DateTime @db.Timestamp()
+  Result     Result?
 
-  @@id([homeTeamId, awayTeamId, gameDate])
+  @@unique([homeTeamId, awayTeamId, gameDate])
   @@map("games")
+}
+
+model Result {
+  id            Int  @id @default(autoincrement())
+  homeTeamGoals Int
+  awayTeamGoals Int
+  gameId        Int  @unique
+  game          Game @relation(fields: [gameId], references: [id])
+
+  @@map("results")
 }
