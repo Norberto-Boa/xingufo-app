@@ -15,6 +15,12 @@ enum Role {
   USER
 }
 
+enum Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
@@ -24,6 +30,37 @@ model User {
   role      Role
   createdAt DateTime @db.Timestamp()
   updatedAt DateTime @db.Timestamp()
+  Team      Team[]
 
   @@map("users")
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  badge     String
+  foundedAt DateTime
+  homeField String?
+  city      String
+  province  String
+  userId    Int
+  createdAt DateTime @db.Timestamp()
+  updatedAt DateTime @db.Timestamp()
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("teams")
+}
+
+model Game {
+  location   String
+  homeTeamId String
+  awayTeamId String
+  gameDate   DateTime @db.Date
+  gameTime   DateTime @db.Time()
+  status     Status
+  createdAt  DateTime @db.Timestamp()
+  updatedAt  DateTime @db.Timestamp()
+
+  @@id([homeTeamId, awayTeamId, gameDate])
+  @@map("games")
 }
