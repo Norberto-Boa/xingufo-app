@@ -5,6 +5,7 @@ const createTeamValidator = z.object({
     required_error: "O campo equipe deve ser preenchido",
     invalid_type_error: "Nome deve ser uma string",
   }),
+  //Validation to be checked
   badge: z
     .string({
       required_error: "O campo logotipo deve ser preenchido",

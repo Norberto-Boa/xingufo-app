@@ -39,6 +39,7 @@ export class UserService {
   }
 
   static async checkIfUserHasTeam(userId: number) {
+    // Get team by the User Id
     const team = await prismaClient.team.findFirst({
       where: {
         userId,
