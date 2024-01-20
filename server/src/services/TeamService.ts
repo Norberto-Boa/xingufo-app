@@ -9,15 +9,10 @@ export class TokenService {
    *
    * @return
    */
-  public static async create({
-    name,
-    badge,
-    city,
-    foundedAt,
-    province,
-    userId,
-    homeField,
-  }: TeamDTO) {
+  public static async create(
+    userId: number,
+    { name, badge, city, foundedAt, province, homeField }: TeamDTO
+  ) {
     const userAlreadyhasTeam = await UserService.checkIfUserHasTeam(userId);
 
     if (userAlreadyhasTeam) {

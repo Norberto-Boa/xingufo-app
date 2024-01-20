@@ -5,5 +5,4 @@ export interface TeamDTO {
   homeField?: string;
   city: string;
   province: string;
-  userId: number;
 }
