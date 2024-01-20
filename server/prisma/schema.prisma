@@ -28,8 +28,8 @@ model User {
   password  String
   cellphone String   @unique
   role      Role
-  createdAt DateTime @db.Timestamp()
-  updatedAt DateTime @db.Timestamp()
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @updatedAt @db.Timestamp()
   Team      Team[]
 
   @@map("users")
@@ -37,15 +37,15 @@ model User {
 
 model Team {
   id        Int       @id @default(autoincrement())
-  name      String
+  name      String    @unique
   badge     String
   foundedAt DateTime
   homeField String?
   city      String
   province  String
   userId    Int
-  createdAt DateTime  @db.Timestamp()
-  updatedAt DateTime  @db.Timestamp()
+  createdAt DateTime  @default(now()) @db.Timestamp()
+  updatedAt DateTime  @updatedAt @db.Timestamp()
   user      User      @relation(fields: [userId], references: [id])
   Game      Game[]    @relation("homeTeam")
   GameAway  Game[]    @relation("awayTeam")
@@ -64,8 +64,8 @@ model Game {
   away       Team     @relation(name: "awayTeam", fields: [awayTeamId], references: [id])
   gameDate   DateTime @db.Date
   gameTime   DateTime @db.Time()
-  createdAt  DateTime @db.Timestamp()
-  updatedAt  DateTime @db.Timestamp()
+  createdAt  DateTime @default(now()) @db.Timestamp()
+  updatedAt  DateTime @updatedAt @db.Timestamp()
   Result     Result?
 
   @@unique([homeTeamId, awayTeamId, gameDate])
@@ -73,11 +73,13 @@ model Game {
 }
 
 model Result {
-  id            Int  @id @default(autoincrement())
+  id            Int      @id @default(autoincrement())
   homeTeamGoals Int
   awayTeamGoals Int
-  gameId        Int  @unique
-  game          Game @relation(fields: [gameId], references: [id])
+  gameId        Int      @unique
+  game          Game     @relation(fields: [gameId], references: [id])
+  createdAt     DateTime @default(now()) @db.Timestamp()
+  updatedAt     DateTime @updatedAt @db.Timestamp()
 
   @@map("results")
 }
@@ -91,5 +93,6 @@ model Request {
   game_time      DateTime @db.Time
   game_date      DateTime @db.Date
   status         Status
-  createdAt      DateTime @db.Timestamp()
+  createdAt      DateTime @default(now()) @db.Timestamp()
+  updatedAt      DateTime @updatedAt @db.Timestamp()
 }
