@@ -17,8 +17,8 @@ enum Role {
 
 enum Status {
   PENDING
-  ACCEPTED
   REJECTED
+  ACCEPTED
 }
 
 model User {
@@ -36,7 +36,7 @@ model User {
 }
 
 model Team {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
   badge     String
   foundedAt DateTime
@@ -44,9 +44,13 @@ model Team {
   city      String
   province  String
   userId    Int
-  createdAt DateTime @db.Timestamp()
-  updatedAt DateTime @db.Timestamp()
-  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @db.Timestamp()
+  updatedAt DateTime  @db.Timestamp()
+  user      User      @relation(fields: [userId], references: [id])
+  Game      Game[]    @relation("homeTeam")
+  GameAway  Game[]    @relation("awayTeam")
+  Request   Request[] @relation("fromTeam")
+  Requested Request[] @relation("receiverTeam")
 
   @@map("teams")
 }
@@ -54,11 +58,12 @@ model Team {
 model Game {
   id         Int      @id @default(autoincrement())
   location   String
-  homeTeamId String
-  awayTeamId String
+  homeTeamId Int
+  home       Team     @relation(name: "homeTeam", fields: [homeTeamId], references: [id])
+  awayTeamId Int
+  away       Team     @relation(name: "awayTeam", fields: [awayTeamId], references: [id])
   gameDate   DateTime @db.Date
   gameTime   DateTime @db.Time()
-  status     Status
   createdAt  DateTime @db.Timestamp()
   updatedAt  DateTime @db.Timestamp()
   Result     Result?
@@ -75,4 +80,16 @@ model Result {
   game          Game @relation(fields: [gameId], references: [id])
 
   @@map("results")
+}
+
+model Request {
+  id             Int      @id @default(autoincrement())
+  fromTeamId     Int
+  from           Team     @relation(name: "fromTeam", fields: [fromTeamId], references: [id])
+  receiverTeamId Int
+  receiver       Team     @relation(name: "receiverTeam", fields: [receiverTeamId], references: [id])
+  game_time      DateTime @db.Time
+  game_date      DateTime @db.Date
+  status         Status
+  createdAt      DateTime @db.Timestamp()
 }
