@@ -30,3 +30,4 @@ const createTeamValidator = z.object({
   }),
 });
 
+export { createTeamValidator };

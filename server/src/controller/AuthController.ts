@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/userServices";
+import { UserService } from "../services/UserServices";
 import { UserDTO } from "../@types/User";
-import { createUserValidator } from "../validators/User/createUserValidator";
-import { loginUserValidator } from "../validators/User/loginUserValidator";
+import { createUserValidator } from "../validators/User/CreateUserValidator";
+import { loginUserValidator } from "../validators/User/LoginUserValidator";
 import { compare } from "bcrypt";
 import { generateAccessToken } from "../services/TokenService";
 
