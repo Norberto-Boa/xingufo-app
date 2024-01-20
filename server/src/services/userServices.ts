@@ -22,21 +22,6 @@ export class UserService {
     });
   }
 
-  // static async existByEmailOrCellphone(email: string, cellphone: string) {
-  //   return await prismaClient.user.findFirst({
-  //     where: {
-  //       OR: [
-  //         {
-  //           cellphone,
-  //         },
-  //         {
-  //           email,
-  //         },
-  //       ],
-  //     },
-  //   });
-  // }
-
   static async existsByEmail(email: string) {
     return await prismaClient.user.findFirst({
       where: {
@@ -51,5 +36,21 @@ export class UserService {
         cellphone,
       },
     });
+  }
+
+  static async checkIfUserHasTeam(userId: number) {
+    const team = await prismaClient.team.findFirst({
+      where: {
+        userId,
+      },
+    });
+
+    if (team) {
+      return true;
+    }
+
+    if (!team) {
+      return false;
+    }
   }
 }
