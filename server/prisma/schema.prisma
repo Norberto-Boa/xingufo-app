@@ -108,4 +108,7 @@ model Ad {
   valid     Boolean  @default(true)
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @updatedAt @db.Timestamp()
+
+  @@unique([teamId, game_date])
+  @@map("ads")
 }
