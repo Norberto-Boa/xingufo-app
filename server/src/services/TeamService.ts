@@ -43,4 +43,12 @@ export class TeamService {
   public static async getAllTeams(): Promise<Team[]> {
     return await prismaClient.team.findMany();
   }
+
+  public static async getTeamById(id: number): Promise<Team | null> {
+    return await prismaClient.team.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Team } from "@prisma/client";
-import { decryptedToken } from "../@types/token";
+import { decryptedToken } from "../@types/Token";
 import { TeamService } from "../services/TeamService";
 import { UserService } from "../services/UserServices";
 import { createTeamValidator } from "../validators/Team/CreateTeamValidator";
@@ -55,4 +55,19 @@ export async function getAllTeams(
   const teams = await TeamService.getAllTeams();
 
   return res.status(200).json(teams);
+}
+
+export async function getTeamById(
+  req: Request,
+  res: Response
+): Promise<Response | undefined> {
+  const { id } = req.params;
+
+  const team = await TeamService.getTeamById(Number(id));
+
+  if (!team) {
+    throw new Error(`Equipe não foi encontrada!`);
+  }
+
+  return res.status(200).json(team);
 }
