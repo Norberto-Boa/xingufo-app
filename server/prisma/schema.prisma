@@ -51,6 +51,7 @@ model Team {
   GameAway  Game[]    @relation("awayTeam")
   Request   Request[] @relation("fromTeam")
   Requested Request[] @relation("receiverTeam")
+  Ad        Ad[]
 
   @@map("teams")
 }
@@ -95,4 +96,16 @@ model Request {
   status         Status
   createdAt      DateTime @default(now()) @db.Timestamp()
   updatedAt      DateTime @updatedAt @db.Timestamp()
+}
+
+model Ad {
+  id        Int      @id @default(autoincrement())
+  teamId    Int
+  team      Team     @relation(fields: [teamId], references: [id])
+  game_date DateTime @db.Date
+  game_time DateTime @db.Time()
+  location  String?
+  valid     Boolean  @default(true)
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @updatedAt @db.Timestamp()
 }
