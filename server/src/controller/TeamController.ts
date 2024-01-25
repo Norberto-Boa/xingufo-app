@@ -47,3 +47,12 @@ export async function create(
   // Store the team in the database
   return res.status(200).json(team);
 }
+
+export async function getAllTeams(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  const teams = await TeamService.getAllTeams();
+
+  return res.status(200).json(teams);
+}

@@ -1,3 +1,4 @@
+import { Team } from "@prisma/client";
 import { TeamDTO } from "../@types/Team";
 import { prismaClient } from "../prisma/client";
 
@@ -37,5 +38,9 @@ export class TeamService {
     } else {
       return false;
     }
+  }
+
+  public static async getAllTeams(): Promise<Team[]> {
+    return await prismaClient.team.findMany();
   }
 }
