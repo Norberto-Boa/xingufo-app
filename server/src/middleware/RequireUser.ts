@@ -1,5 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
+import { decryptedToken } from "../@types/token";
+
+interface User{
+  email: string;
+  name: string;
+}
 
 export const requireUser = (
   req: Request,
@@ -14,8 +20,8 @@ export const requireUser = (
     }
 
     const [, token] = authHeader.split(" ");
-    verify(token, process.env.JWT_SECRET as string);
-
+    const decocded = verify(token, process.env.JWT_SECRET as string);
+    (req as any).user = decocded as decryptedToken; 
     return next();
   } catch (e) {
     return res.status(401).json({

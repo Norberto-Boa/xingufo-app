@@ -1,7 +1,7 @@
 import { TeamDTO } from "../@types/Team";
 import { prismaClient } from "../prisma/client";
 
-export class TokenService {
+export class TeamService {
   /**
    * Function to create a new Team
    * @param teamData
@@ -12,8 +12,7 @@ export class TokenService {
     userId: number,
     { name, badge, city, foundedAt, province, homeField }: TeamDTO
   ) {
-
-    const team = await prismaClient.team.create({
+    return await prismaClient.team.create({
       data: {
         name,
         badge,
@@ -24,11 +23,9 @@ export class TokenService {
         homeField,
       },
     });
-
-    return team;
   }
 
-  private static async checkTeamByName(name: string) {
+  public static async checkTeamByName(name: string) {
     const team = await prismaClient.team.findFirst({
       where: {
         name,

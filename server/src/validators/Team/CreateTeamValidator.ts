@@ -12,7 +12,7 @@ const createTeamValidator = z.object({
       invalid_type_error: "Don't fool us nigga",
     })
     .url({ message: "O campo logotipo deve ser uma URL." }),
-  foundedAt: z
+  foundedAt: z.coerce
     .date({
       required_error: "A equipe deve ter uma data de criação",
       invalid_type_error: "A formatacao da data esta errada",
