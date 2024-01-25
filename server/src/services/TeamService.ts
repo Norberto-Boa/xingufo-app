@@ -51,4 +51,12 @@ export class TeamService {
       },
     });
   }
+
+  public static async getTeamByUserId(userId: number): Promise<Team | null> {
+    return await prismaClient.team.findFirst({
+      where: {
+        userId,
+      },
+    });
+  }
 }

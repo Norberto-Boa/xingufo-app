@@ -71,3 +71,20 @@ export async function getTeamById(
 
   return res.status(200).json(team);
 }
+
+export async function getTeamByUser(
+  req: Request,
+  res: Response
+): Promise<Response | undefined> {
+  const { id } = req.params;
+
+  const user = await UserService.getUserById(Number(id));
+
+  if (!user) {
+    throw new Error("O usuário não foi encontrado!");
+  }
+
+  const team = await TeamService.getTeamByUserId(user.id);
+
+  return res.status(200).json(team);
+}

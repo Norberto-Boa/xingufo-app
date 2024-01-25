@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { UserDTO } from "../@types/User";
 import { prismaClient } from "../prisma/client";
 import { hash } from "bcrypt";
@@ -19,6 +19,14 @@ export class UserService {
 
     return await prismaClient.user.create({
       data: userData,
+    });
+  }
+
+  static async getUserById(id: number): Promise<User | null> {
+    return await prismaClient.user.findFirst({
+      where: {
+        id,
+      },
     });
   }
 
