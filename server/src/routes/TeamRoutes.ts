@@ -22,4 +22,7 @@ TeamRoutes.get("/team/:id", requireUser, tryCatch(getTeamById));
 // Get Team By User Id
 TeamRoutes.get("/team/user/:id", requireUser, tryCatch(getTeamByUser));
 
+// Edit a Team
+
+
 export { TeamRoutes };

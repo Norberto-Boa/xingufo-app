@@ -43,7 +43,7 @@ model Team {
   homeField String?
   city      String
   province  String
-  userId    Int
+  userId    Int       @unique
   createdAt DateTime  @default(now()) @db.Timestamp()
   updatedAt DateTime  @updatedAt @db.Timestamp()
   user      User      @relation(fields: [userId], references: [id])
@@ -111,4 +111,4 @@ model Ad {
 
   @@unique([teamId, game_date])
   @@map("ads")
-}
+  }
