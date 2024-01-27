@@ -46,7 +46,7 @@ model Team {
   userId    Int       @unique
   createdAt DateTime  @default(now()) @db.Timestamp()
   updatedAt DateTime  @updatedAt @db.Timestamp()
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   Game      Game[]    @relation("homeTeam")
   GameAway  Game[]    @relation("awayTeam")
   Request   Request[] @relation("fromTeam")
@@ -60,9 +60,9 @@ model Game {
   id         Int      @id @default(autoincrement())
   location   String
   homeTeamId Int
-  home       Team     @relation(name: "homeTeam", fields: [homeTeamId], references: [id])
+  home       Team     @relation(name: "homeTeam", fields: [homeTeamId], references: [id], onDelete: Cascade)
   awayTeamId Int
-  away       Team     @relation(name: "awayTeam", fields: [awayTeamId], references: [id])
+  away       Team     @relation(name: "awayTeam", fields: [awayTeamId], references: [id], onDelete: Cascade)
   gameDate   DateTime @db.Date
   gameTime   DateTime @db.Time()
   createdAt  DateTime @default(now()) @db.Timestamp()
@@ -78,7 +78,7 @@ model Result {
   homeTeamGoals Int
   awayTeamGoals Int
   gameId        Int      @unique
-  game          Game     @relation(fields: [gameId], references: [id])
+  game          Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now()) @db.Timestamp()
   updatedAt     DateTime @updatedAt @db.Timestamp()
 
@@ -88,9 +88,9 @@ model Result {
 model Request {
   id             Int      @id @default(autoincrement())
   fromTeamId     Int
-  from           Team     @relation(name: "fromTeam", fields: [fromTeamId], references: [id])
+  from           Team     @relation(name: "fromTeam", fields: [fromTeamId], references: [id], onDelete: Cascade)
   receiverTeamId Int
-  receiver       Team     @relation(name: "receiverTeam", fields: [receiverTeamId], references: [id])
+  receiver       Team     @relation(name: "receiverTeam", fields: [receiverTeamId], references: [id], onDelete: Cascade)
   game_time      DateTime @db.Time
   game_date      DateTime @db.Date
   status         Status
@@ -101,7 +101,7 @@ model Request {
 model Ad {
   id        Int      @id @default(autoincrement())
   teamId    Int
-  team      Team     @relation(fields: [teamId], references: [id])
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   game_date DateTime @db.Date
   game_time DateTime @db.Time()
   location  String?
@@ -111,4 +111,4 @@ model Ad {
 
   @@unique([teamId, game_date])
   @@map("ads")
-  }
+}
