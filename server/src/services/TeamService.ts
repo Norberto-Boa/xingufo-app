@@ -45,10 +45,19 @@ export class TeamService {
     return await prismaClient.team.findMany();
   }
 
-  public static async getTeamById(id: number): Promise<Team | null> {
+  public static async getTeamById(id: number) {
     return await prismaClient.team.findFirst({
       where: {
         id,
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+            cellphone: true,
+            name: true,
+          },
+        },
       },
     });
   }
@@ -62,13 +71,12 @@ export class TeamService {
   }
 
   public static async updateTeam(
-    userId: number,
     id: number,
     { name, badge, city, foundedAt, homeField, province }: Partial<TeamDTO>
   ): Promise<Team | null> {
     return prismaClient.team.update({
       where: {
-        id
+        id,
       },
       data: {
         name,
@@ -79,10 +87,5 @@ export class TeamService {
         province,
       },
     });
-    // if (!team) {
-
-    // }
-
-    return null;
   }
 }

@@ -4,6 +4,7 @@ import {
   getAllTeams,
   getTeamById,
   getTeamByUser,
+  updateUserTeam,
 } from "../controller/TeamController";
 import { tryCatch } from "../utlis/tryCatch";
 import { requireUser } from "../middleware/RequireUser";
@@ -11,18 +12,18 @@ import { requireUser } from "../middleware/RequireUser";
 const TeamRoutes = Router();
 
 // Create a new Team
-TeamRoutes.post("/team/create", requireUser, tryCatch(create));
+TeamRoutes.post("/teams/create", requireUser, tryCatch(create));
 
 // Get all teams
 TeamRoutes.get("/teams", requireUser, tryCatch(getAllTeams));
 
 // Get Team By Id
-TeamRoutes.get("/team/:id", requireUser, tryCatch(getTeamById));
+TeamRoutes.get("/teams/:id", requireUser, tryCatch(getTeamById));
 
 // Get Team By User Id
-TeamRoutes.get("/team/user/:id", requireUser, tryCatch(getTeamByUser));
+TeamRoutes.get("/teams/user/:id", requireUser, tryCatch(getTeamByUser));
 
 // Edit a Team
-
+TeamRoutes.put("/teams/:id", requireUser, tryCatch(updateUserTeam));
 
 export { TeamRoutes };
