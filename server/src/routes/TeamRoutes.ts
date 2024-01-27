@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   create,
+  deleteTeam,
   getAllTeams,
   getTeamById,
   getTeamByUser,
@@ -30,6 +31,14 @@ TeamRoutes.put(
   requireUser,
   UserOwnsTeam,
   tryCatch(updateUserTeam)
+);
+
+// Delete Team
+TeamRoutes.delete(
+  "/teams/:id",
+  requireUser,
+  UserOwnsTeam,
+  tryCatch(deleteTeam)
 );
 
 export { TeamRoutes };

@@ -111,3 +111,16 @@ export async function updateUserTeam(
 
   return res.status(200).json(updatedTeam);
 }
+
+export async function deleteTeam(
+  req: Request,
+  res: Response
+): Promise<Response | never> {
+  const { id } = req.params;
+
+  await TeamService.deleteTeam(Number(id));
+
+  return res.status(200).json({
+    message: `Equipe apagada com sucesso`,
+  });
+}
