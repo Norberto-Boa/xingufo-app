@@ -88,4 +88,12 @@ export class TeamService {
       },
     });
   }
+
+  public static async deleteTeam(id: number) {
+    return await prismaClient.team.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

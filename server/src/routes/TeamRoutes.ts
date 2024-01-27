@@ -8,6 +8,7 @@ import {
 } from "../controller/TeamController";
 import { tryCatch } from "../utlis/tryCatch";
 import { requireUser } from "../middleware/RequireUser";
+import { UserOwnsTeam } from "../middleware/CheckIfUserOwnsTeam";
 
 const TeamRoutes = Router();
 
@@ -24,6 +25,11 @@ TeamRoutes.get("/teams/:id", requireUser, tryCatch(getTeamById));
 TeamRoutes.get("/teams/user/:id", requireUser, tryCatch(getTeamByUser));
 
 // Edit a Team
-TeamRoutes.put("/teams/:id", requireUser, tryCatch(updateUserTeam));
+TeamRoutes.put(
+  "/teams/:id",
+  requireUser,
+  UserOwnsTeam,
+  tryCatch(updateUserTeam)
+);
 
 export { TeamRoutes };

@@ -2,11 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import { decryptedToken } from "../@types/Token";
 
-interface User {
-  email: string;
-  name: string;
-}
-
 export const requireUser = (
   req: Request,
   res: Response,
@@ -25,7 +20,7 @@ export const requireUser = (
     return next();
   } catch (e) {
     return res.status(401).json({
-      message: "O Token é inválido",
+      message: "Usuário não autenticado!",
     });
   }
 };

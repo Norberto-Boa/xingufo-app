@@ -96,21 +96,6 @@ export async function updateUserTeam(
   // Fetch the team id
   const { id } = req.params;
 
-  // Get the team information
-  const team = await TeamService.getTeamById(Number(id));
-
-  if (!team) {
-    throw new Error(`Equipe não foi encontrada!`);
-  }
-
-  // Get the User Id
-  const user = (req as any).user as decryptedToken;
-
-  // Check if the user owns the team
-  if (user.email !== team.user.email) {
-    throw new Error(`O usuário só pode actualizar sua própria equipe!`);
-  }
-
   // Validate the fields
   const { name, badge, city, foundedAt, homeField, province } =
     createTeamValidator.partial().parse(req.body);
