@@ -25,7 +25,7 @@ export async function register(req: Request, res: Response) {
     password: password,
   });
 
-  return res.status(200).json({ message: "You were sucessfully registered" });
+  return res.status(201).json({ message: "You were sucessfully registered" });
 }
 
 export async function login(req: Request, res: Response) {
