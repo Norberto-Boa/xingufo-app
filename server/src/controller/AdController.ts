@@ -33,3 +33,13 @@ export async function create(
 
   return res.status(201).json(ad);
 }
+
+export async function getAllAdsByTeam(req: Request, res: Response) {
+  const { id } = req.params;
+
+  const ads = await AdService.getAdsByTeamId(Number(id));
+
+  return res.status(200).json({
+    ads,
+  });
+}

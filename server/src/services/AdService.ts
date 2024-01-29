@@ -26,7 +26,16 @@ export class AdService {
     });
   }
 
-  public static async getAdsByTeamId() {}
+  public static async getAdsByTeamId(teamId: number) {
+    return await prismaClient.ad.findMany({
+      where: {
+        teamId,
+      },
+      include: {
+        team: true,
+      },
+    });
+  }
 
   public static async getAdByTeamIdAndGameDate(teamId: number, gameDate: Date) {
     return await prismaClient.ad.findFirst({
