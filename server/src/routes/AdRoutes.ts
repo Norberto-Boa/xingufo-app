@@ -6,7 +6,7 @@ import { create, getAllAdsByTeam } from "../controller/AdController";
 
 const AdRoutes = Router();
 
-AdRoutes.post("/ads/:id", requireUser, tryCatch(getAllAdsByTeam));
+AdRoutes.get("/ads/:id", requireUser, tryCatch(getAllAdsByTeam));
 AdRoutes.post("/ads/:id", requireUser, UserOwnsTeam, tryCatch(create));
 
 export { AdRoutes };
