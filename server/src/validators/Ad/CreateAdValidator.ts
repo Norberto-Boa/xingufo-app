@@ -6,7 +6,7 @@ export const createAdValidator = z.object({
       required_error: "A data pretendida é obrigatória",
     })
     .refine((date) => {
-      return date > new Date(Date.now());
+      return date >= new Date(Date.now());
     }, "Data deve ser maior que a data actual!"),
   gameTime: z.string(),
   location: z.string().optional(),
