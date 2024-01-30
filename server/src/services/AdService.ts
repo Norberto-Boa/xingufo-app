@@ -26,6 +26,14 @@ export class AdService {
     });
   }
 
+  public static async getAdById(id: number): Promise<Ad | null> {
+    return await prismaClient.ad.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
   public static async getAdsByTeamId(teamId: number) {
     return await prismaClient.ad.findMany({
       where: {
@@ -48,6 +56,14 @@ export class AdService {
             gameDate,
           },
         ],
+      },
+    });
+  }
+
+  public static async delete(id: number) {
+    return await prismaClient.ad.delete({
+      where: {
+        id,
       },
     });
   }

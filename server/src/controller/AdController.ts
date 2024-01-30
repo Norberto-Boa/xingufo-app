@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createAdValidator } from "../validators/Ad/CreateAdValidator";
 import { AdService } from "../services/AdService";
+import { deleteAdValidator } from "../validators/Ad/DeleteAdValidator";
 
 export async function create(
   req: Request,
@@ -42,4 +43,20 @@ export async function getAllAdsByTeam(req: Request, res: Response) {
   return res.status(200).json({
     ads,
   });
+}
+
+export async function deleteAd(
+  req: Request,
+  res: Response
+): Promise<Response | never> {
+  const { id } = deleteAdValidator.parse(req.body);
+
+  const ad = await AdService.getAdById(id);
+  if (!ad) {
+    return res.status(400).json({ message: "O anuncio nao foi encontrado!" });
+  }
+
+  const deletedAd = await AdService.delete(id);
+
+  return res.status(200).json(deletedAd);
 }
