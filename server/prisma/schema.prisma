@@ -91,9 +91,9 @@ model Request {
   from           Team     @relation(name: "fromTeam", fields: [fromTeamId], references: [id], onDelete: Cascade)
   receiverTeamId Int
   receiver       Team     @relation(name: "receiverTeam", fields: [receiverTeamId], references: [id], onDelete: Cascade)
-  gameTime      DateTime @db.Time
-  gameDate      DateTime @db.Date
-  status         Status
+  gameTime       DateTime @db.Time
+  gameDate       DateTime @db.Date
+  status         Status   @default(PENDING)
   createdAt      DateTime @default(now()) @db.Timestamp()
   updatedAt      DateTime @updatedAt @db.Timestamp()
 }
@@ -102,8 +102,8 @@ model Ad {
   id        Int      @id @default(autoincrement())
   teamId    Int
   team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  gameDate DateTime @db.Date
-  gameTime DateTime @db.Time()
+  gameDate  DateTime @db.Date
+  gameTime  DateTime @db.Time()
   location  String?
   valid     Boolean  @default(true)
   createdAt DateTime @default(now()) @db.Timestamp()
