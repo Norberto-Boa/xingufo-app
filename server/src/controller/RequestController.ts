@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { CreateRequestValidator } from "../validators/Request/CreateRequestValidator";
 import { RequestService } from "../services/RequestService";
 import { TeamService } from "../services/TeamService";
+import { SmsService } from "../services/SmsService";
+import format from "../utlis/dateFormat";
 
 export async function createRequest(req: Request, res: Response) {
   const { fromTeamId, gameDate, gameTime, receiverTeamId } =
@@ -24,6 +26,16 @@ export async function createRequest(req: Request, res: Response) {
     });
 
   if (requestAlreadyExists) {
+    await SmsService.send({
+      message: `"\n \n \n \n" A equipe ${
+        fromTeam.name
+      } deseja desafiar-lhe no dia ${format(
+        gameDate,
+        "dd 'de' MMMM 'de' yyyy"
+      )} pelas ${format(gameTime, "k':'mm 'periodo' BBBB")}!`,
+      to: "+258" + receiverTeam.user.cellphone,
+    });
+
     return res.status(201).json({ requestAlreadyExists });
   }
 
