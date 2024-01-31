@@ -4,6 +4,8 @@ import { RequestService } from "../services/RequestService";
 import { TeamService } from "../services/TeamService";
 import { SmsService } from "../services/SmsService";
 import format from "../utlis/dateFormat";
+import { UpdateRequestValidator } from "../validators/Request/UpdateRequestValidator";
+import { sub } from "date-fns";
 
 export async function createRequest(req: Request, res: Response) {
   const { fromTeamId, gameDate, gameTime, receiverTeamId } =
@@ -36,7 +38,7 @@ export async function createRequest(req: Request, res: Response) {
       to: "+258" + receiverTeam.user.cellphone,
     });
 
-    return res.status(201).json({ requestAlreadyExists });
+    return res.status(201).json(requestAlreadyExists);
   }
 
   const newRequest = await RequestService.create({
@@ -56,5 +58,37 @@ export async function createRequest(req: Request, res: Response) {
     to: "+258" + receiverTeam.user.cellphone,
   });
 
-  return res.status(200).json({ newRequest });
+  return res.status(200).json(newRequest);
+}
+
+export async function updateRequest(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  const { id, gameDate, gameTime } = UpdateRequestValidator.parse(req.body);
+
+  const requestExists = await RequestService.getById(id);
+
+  if (!requestExists) {
+    return res.status(404).json({ message: "O desafio nao foi encontrado!" });
+  }
+
+  const updateRequest = await RequestService.update(id, { gameDate, gameTime });
+
+  await SmsService.send({
+    message: `"\n \n \n \n" A equipe ${
+      requestExists.from.name
+    } deseja alterar o desafio para o dia ${
+      gameDate
+        ? format(gameDate, "dd 'de' MMMM 'de' yyyy")
+        : format(requestExists.gameDate, "dd 'de' MMMM 'de' yyyy")
+    } pelas ${
+      gameTime
+        ? format(sub(gameTime, { hours: 2 }), "pp 'periodo' BBBB")
+        : format(sub(requestExists.gameTime, { hours: 2 }), "pp 'periodo' BBBB")
+    }!`,
+    to: "+258" + updateRequest.receiver.user.cellphone,
+  });
+
+  return res.status(201).json(updateRequest);
 }

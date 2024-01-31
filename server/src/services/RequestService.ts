@@ -25,6 +25,24 @@ export class RequestService {
     });
   }
 
+  public static async getById(id: number) {
+    return await prismaClient.request.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        from: true,
+      },
+    });
+  }
+
+  /**
+   * Function that gets the Request by the sender and date
+   * @param fromTeamId
+   * @param gameDate
+   * @param receiverTeamId
+   * @returns
+   */
   public static async getRequestBySenderReceiverGameDate({
     fromTeamId,
     gameDate,
@@ -49,5 +67,30 @@ export class RequestService {
       },
     });
   }
-}
 
+  public static async update(
+    id: number,
+    { gameDate, gameTime }: Partial<Pick<Request, "gameDate" | "gameTime">>
+  ) {
+    return await prismaClient.request.update({
+      where: {
+        id,
+      },
+      data: {
+        gameDate,
+        gameTime,
+      },
+      include: {
+        receiver: {
+          include: {
+            user: {
+              select: {
+                cellphone: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+}

@@ -27,5 +27,4 @@ export const CreateRequestValidator = z.object({
     required_error: "O jogo deve ter uma data proposta",
     invalid_type_error: "Do not fool us please!",
   }),
-  location: z.string().optional(),
 });
