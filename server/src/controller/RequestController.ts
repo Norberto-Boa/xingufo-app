@@ -46,5 +46,15 @@ export async function createRequest(req: Request, res: Response) {
     gameTime,
   });
 
+  await SmsService.send({
+    message: `"\n \n \n \n" A equipe ${
+      fromTeam.name
+    } deseja desafiar-lhe no dia ${format(
+      gameDate,
+      "dd 'de' MMMM 'de' yyyy"
+    )} pelas ${format(gameTime, "k':'mm 'periodo' BBBB")}!`,
+    to: "+258" + receiverTeam.user.cellphone,
+  });
+
   return res.status(200).json({ newRequest });
 }
