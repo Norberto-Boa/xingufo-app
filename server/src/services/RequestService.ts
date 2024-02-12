@@ -93,4 +93,26 @@ export class RequestService {
       },
     });
   }
+
+  public static async accept(id: number, { status }: Pick<Request, "status">) {
+    return await prismaClient.request.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+      include: {
+        from: {
+          include: {
+            user: {
+              select: {
+                cellphone: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }

@@ -22,4 +22,9 @@ export const UpdateRequestValidator = z.object({
       invalid_type_error: "Do not fool us please!",
     })
     .optional(),
+  location: z.coerce
+    .string({
+      invalid_type_error: "Do not fool us please!",
+    })
+    .optional(),
 });

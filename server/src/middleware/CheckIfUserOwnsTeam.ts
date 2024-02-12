@@ -17,9 +17,9 @@ export const UserOwnsTeam = async (
       throw new Error(`Alguma coisa esta errada com a sua autenticação!`);
     }
 
-    const { id } = req.params;
+    const { teamid } = req.params;
 
-    const team = await TeamService.getTeamById(Number(id));
+    const team = await TeamService.getTeamById(Number(teamid));
 
     if (!team) {
       return res.status(400).json({

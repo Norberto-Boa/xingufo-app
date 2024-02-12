@@ -6,6 +6,8 @@ import { SmsService } from "../services/SmsService";
 import format from "../utlis/dateFormat";
 import { UpdateRequestValidator } from "../validators/Request/UpdateRequestValidator";
 import { sub } from "date-fns";
+import { Status } from "@prisma/client";
+import { GameService } from "../services/GameService";
 
 export async function createRequest(req: Request, res: Response) {
   const { fromTeamId, gameDate, gameTime, receiverTeamId } =
@@ -91,4 +93,53 @@ export async function updateRequest(
   });
 
   return res.status(201).json(updateRequest);
+}
+
+export async function acceptRequest(
+  req: Request,
+  res: Response
+): Promise<Response | never> {
+  const { id, location } = UpdateRequestValidator.parse(req.body);
+  const status = Status.ACCEPTED;
+
+  const requestExists = await RequestService.getById(id);
+
+  if (!requestExists) {
+    return res.status(404).json({ message: "O desafio nao foi encontrado!" });
+  }
+
+  if (requestExists.status === Status.ACCEPTED) {
+    return res.status(400).json({ message: "Desafio ja foi aceite!" });
+  }
+
+  const updateRequest = await RequestService.accept(id, { status });
+
+  if (!location) {
+    return res
+      .status(400)
+      .json({ message: "O desafio deve ter uma localização!" });
+  }
+
+  const createGame = await GameService.create({
+    awayTeamId: updateRequest.receiverTeamId,
+    homeTeamId: updateRequest.fromTeamId,
+    gameDate: updateRequest.gameDate,
+    gameTime: updateRequest.gameTime,
+    location: location,
+  });
+
+  await SmsService.send({
+    message: `"\n \n \n \n" A equipe ${
+      requestExists.from.name
+    }  aceita o desafio para o dia ${format(
+      requestExists.gameDate,
+      "dd 'de' MMMM 'de' yyyy"
+    )} pelas ${format(
+      sub(requestExists.gameTime, { hours: 2 }),
+      "pp 'periodo' BBBB"
+    )}!`,
+    to: "+258" + updateRequest.from.user.cellphone,
+  });
+
+  return res.status(201).json({ request: updateRequest, game: createGame });
 }
