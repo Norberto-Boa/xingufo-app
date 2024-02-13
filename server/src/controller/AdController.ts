@@ -8,11 +8,11 @@ export async function create(
   req: Request,
   res: Response
 ): Promise<Response | never> {
-  const { id } = req.params;
+  const { teamid } = req.params;
 
   const { gameDate, gameTime, location } = createAdValidator.parse(req.body);
 
-  const teamId = Number(id);
+  const teamId = Number(teamid);
 
   const teamAlreadyHasAd = await AdService.getAdByTeamIdAndGameDate(
     teamId,

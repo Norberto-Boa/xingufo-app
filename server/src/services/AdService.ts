@@ -42,6 +42,17 @@ export class AdService {
           gt: today,
         },
       },
+      include: {
+        team: {
+          select: {
+            name: true,
+            city: true,
+            homeField: true,
+            province: true,
+            badge: true,
+          },
+        },
+      },
       orderBy: {
         createdAt: "desc",
       },
