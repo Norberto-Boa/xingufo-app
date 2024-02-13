@@ -27,6 +27,30 @@ export class AdService {
   }
 
   /**
+   * Function that returns an array of ads.
+   *
+   * @param page page number
+   * @returns Array of ads
+   */
+  public static async getAds(page: number): Promise<Ad[] | null> {
+    const adsPerPage = 8;
+    const start = page === 1 ? (page - 1) * adsPerPage : 0;
+    const today = new Date();
+    return await prismaClient.ad.findMany({
+      where: {
+        gameDate: {
+          gt: today,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: start,
+      take: adsPerPage,
+    });
+  }
+
+  /**
    * Function that gets the Ad by the ID
    *
    * @param id

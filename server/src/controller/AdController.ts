@@ -36,10 +36,18 @@ export async function create(
   return res.status(201).json(ad);
 }
 
-export async function getAllAdsByTeam(req: Request, res: Response) {
-  const { id } = req.params;
+export async function getAds(req: Request, res: Response): Promise<Response> {
+  const { page } = req.query;
 
-  const ads = await AdService.getAdsByTeamId(Number(id));
+  const ads = await AdService.getAds(Number(page));
+
+  return res.status(200).json(ads);
+}
+
+export async function getAllAdsByTeam(req: Request, res: Response) {
+  const { teamid } = req.params;
+
+  const ads = await AdService.getAdsByTeamId(Number(teamid));
 
   return res.status(200).json({
     ads,
