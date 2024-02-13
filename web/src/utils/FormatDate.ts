@@ -1,5 +1,7 @@
-import { format } from "date-fns";
+import { formatToTimeZone } from "date-fns-timezone";
 
 export function formatDate(date: string): string {
-  return format(date, "dd/MM/yyyy");
+  return formatToTimeZone(date, "DD/MM/YYYY", {
+    timeZone: "Africa/Johannesburg",
+  });
 }

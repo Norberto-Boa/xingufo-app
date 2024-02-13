@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { JwtPayload, verify } from "jsonwebtoken";
 import Ads from "@/components/Ads";
+import { redirect } from "next/navigation";
 
 // interface decodedToken extends JwtPayload {
 //   name: string;
@@ -12,7 +13,11 @@ export default function Dashboard() {
   const token = cookieStore.get("auth.token");
   let decoded;
   if (token) {
-    decoded = verify(token.value, "Mena") as JwtPayload;
+    try {
+      decoded = verify(token.value, "Mena") as JwtPayload;
+    } catch (err) {
+      redirect("/login");
+    }
   }
 
   return (
