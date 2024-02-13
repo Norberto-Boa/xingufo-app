@@ -32,6 +32,10 @@ export class GameService {
       where: {
         id,
       },
+      include: {
+        home: true,
+        away: true,
+      },
     });
   }
 

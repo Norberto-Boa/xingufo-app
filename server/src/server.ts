@@ -5,6 +5,7 @@ import { errorHandler } from "./middleware/errorHandler";
 import { TeamRoutes } from "./routes/TeamRoutes";
 import { AdRoutes } from "./routes/AdRoutes";
 import { RequestRoutes } from "./routes/RequestRoutes";
+import { GameRoutes } from "./routes/GameRoutes";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(AuthRoutes);
 app.use(TeamRoutes);
 app.use(AdRoutes);
+app.use(GameRoutes);
 app.use(RequestRoutes);
 app.use(errorHandler);
 
