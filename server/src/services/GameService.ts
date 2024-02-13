@@ -4,6 +4,7 @@ import { GameDTO } from "../@types/Game";
 
 export class GameService {
   /**
+   * Function that creates a game
    *
    * @param GameDTO object
    * @returns Game --- object
@@ -27,6 +28,28 @@ export class GameService {
     });
   }
 
+  public static async getGames(page: number): Promise<Game[] | null> {
+    const gamesPerPage = 8;
+    const start = page === 1 ? (page - 1) * gamesPerPage : 0;
+    return await prismaClient.game.findMany({
+      orderBy: {
+        gameDate: "desc",
+      },
+      skip: start,
+      take: gamesPerPage,
+      include: {
+        home: true,
+        away: true,
+      },
+    });
+  }
+
+  /**
+   * Function that gets a single game
+   *
+   * @param id number
+   * @returns Game object
+   */
   public static async getGameById(id: number): Promise<Game | null> {
     return await prismaClient.game.findFirst({
       where: {
@@ -40,6 +63,7 @@ export class GameService {
   }
 
   /**
+   * Function that deletes a game
    *
    * @param id number
    * @returns Game

@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
 import { GameService } from "../services/GameService";
-import { number } from "zod";
+
+export async function getGames(req: Request, res: Response): Promise<Response> {
+  const { page } = req.query;
+
+  const games = await GameService.getGames(Number(page));
+
+  return res.status(200).json(games);
+}
 
 export async function getGameById(
   req: Request,
