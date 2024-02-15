@@ -1,6 +1,6 @@
 "use client";
 import { ApiError } from "@/@types/global";
-import Input from "@/components/input";
+import Input from "@/components/Input";
 import { baseUrl } from "@/utils/BaseUrl";
 import { ErrorMessage, Form, Formik, FormikErrors } from "formik";
 import Link from "next/link";
