@@ -61,7 +61,7 @@ export default function Register() {
       if (req.ok) {
         const successResponse: LoginSuccess = await req.json();
         setCookie(undefined, "auth.token", await successResponse.token);
-        setIsSubmitting(false);
+        // setIsSubmitting(false);
         router.push("dashboard");
       } else {
         const errorMessage: ApiError = await req.json();
