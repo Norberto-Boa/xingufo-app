@@ -1,14 +1,32 @@
 "use client";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Field, FieldProps, Form, Formik, FormikFormProps } from "formik";
+import {
+  Field,
+  FieldProps,
+  Form,
+  Formik,
+  FormikFormProps,
+  FormikProps,
+} from "formik";
 import { PlusCircle, X } from "phosphor-react";
 import DatePicker, { registerLocale } from "react-datepicker";
+import { addDays } from "date-fns";
 import Input from "./Input";
 import "react-datepicker/dist/react-datepicker.css";
 import pt from "date-fns/locale/pt";
 
+interface FormValues {
+  location: string;
+  gameDate?: Date;
+  gameTime?: Date;
+}
+
 export default function CreateAdDialog() {
   registerLocale("pt", pt);
+
+  const initialValues: FormValues = {
+    location: "",
+  };
 
   return (
     <Dialog.Root>
@@ -32,7 +50,10 @@ export default function CreateAdDialog() {
 
           <div className="bg-slate-400 h-[1px] my-4 w-full" />
 
-          <Formik>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values, actions) => console.log(values)}
+          >
             <Form>
               {/* Location Input  */}
               <Input
@@ -49,34 +70,59 @@ export default function CreateAdDialog() {
               {/* Date Input*/}
               <div className="w-full">
                 <label htmlFor="gameDate">
-                  {" "}
                   Selecione uma data proposta para o jogo
                 </label>
                 <Field name="gameDate" className="w-full">
-                  {({ field, form }: any) => (
+                  {({ field, form }: FieldProps) => (
                     <DatePicker
                       wrapperClassName="w-full"
                       placeholderText="Selecione uma data"
                       className="bg-zinc-400 dark:bg-black border border-zinc-800 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full mt-1"
                       id="gameDate"
-                      name="gameDate"
                       {...field}
+                      dateFormat={"dd/MM/yyyy"}
+                      onChange={(date: any) => {
+                        form.setFieldValue("gameDate", date);
+                      }}
                       selected={field.value}
-                      locale="es"
-                      onChange={(date: any) =>
-                        form.setFieldValue(field.name, date)
-                      }
+                      minDate={addDays(new Date(), 1)}
                     />
                   )}
                 </Field>
-
-                <button
-                  type="submit"
-                  className="w-full bg-emerald-400 uppercase font-bold py-3 rounded transition-all hover:bg-emerald-500 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
-                >
-                  Login
-                </button>
               </div>
+
+              {/* Time Input*/}
+              <div className="w-full">
+                <label htmlFor="gameTime">Selecione uma hora proposta</label>
+                <Field name="gameTime" className="w-full">
+                  {({ field, form }: any) => (
+                    <DatePicker
+                      wrapperClassName="w-full"
+                      placeholderText="Selecione uma hora"
+                      timeCaption="Hora"
+                      className="bg-zinc-400 dark:bg-black border border-zinc-800 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full mt-1"
+                      id="gameTime"
+                      name="gameTime"
+                      showTimeSelect
+                      showTimeSelectOnly
+                      timeFormat="HH:mm"
+                      dateFormat={"HH:mm"}
+                      {...field}
+                      onChange={(time: any) => {
+                        form.setFieldValue(field.name, time);
+                        console.log(time);
+                      }}
+                      selected={field.value}
+                    />
+                  )}
+                </Field>
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-emerald-400 uppercase font-bold py-3 rounded transition-all hover:bg-emerald-500 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+              >
+                Criar Anuncio
+              </button>
             </Form>
           </Formik>
         </Dialog.Content>
