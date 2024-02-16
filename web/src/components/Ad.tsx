@@ -28,7 +28,9 @@ export default function Ad({ badge, date, time, location, name }: AdProps) {
       <span className="font-bold whitespace-nowrap text-center overflow-hidden text-ellipsis px-2 w-32">
         {name}
       </span>
-      <span className="font-semibold text-green-400 mb-2">{location}</span>
+      <span className="font-semibold text-green-400 mb-2 text-center text-ellipsis overflow-hidden whitespace-nowrap px-1 w-32">
+        {location}
+      </span>
       <span className="font-semibold text-white">{formatDateToTime(time)}</span>
     </div>
   );

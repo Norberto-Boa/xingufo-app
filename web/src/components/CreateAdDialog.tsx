@@ -1,13 +1,6 @@
 "use client";
 import * as Dialog from "@radix-ui/react-dialog";
-import {
-  Field,
-  FieldProps,
-  Form,
-  Formik,
-  FormikFormProps,
-  FormikProps,
-} from "formik";
+import { Field, FieldProps, Form, Formik } from "formik";
 import { PlusCircle, X } from "phosphor-react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { addDays } from "date-fns";
@@ -16,25 +9,60 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { ApiErrorMessage } from "../@types/global";
 import { convertDateToTimezone } from "@/utils/ConvertDateToTimezone";
+import { baseUrl } from "@/utils/BaseUrl";
+import { CheckIfIsAuthenticatedOnClient } from "@/utils/Token";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   location: string;
-  gameDate?: Date;
+  gameDate: Date;
   gameTime?: Date;
 }
 
 export default function CreateAdDialog() {
-  const [apiError, setAPiError] = useState<ApiErrorMessage>({ message: "" });
+  const [apiError, setApiError] = useState<ApiErrorMessage>({ message: "" });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const router = useRouter();
 
   const initialValues: FormValues = {
     location: "",
+    gameDate: addDays(new Date(), 1),
   };
 
   const handleSubmit = async ({ location, gameDate, gameTime }: FormValues) => {
-    if (gameDate && gameTime) {
-      const Date = convertDateToTimezone(gameDate);
-      console.log(Date);
+    setIsSubmitting(true);
+    setApiError({ message: "" });
+    const date = convertDateToTimezone(gameDate);
+
+    let time;
+    if (gameTime) {
+      time = convertDateToTimezone(gameTime);
+    }
+
+    const token = CheckIfIsAuthenticatedOnClient();
+    try {
+      const req = await fetch(`${baseUrl}ads`, {
+        method: "POST",
+        body: JSON.stringify({
+          location: location,
+          gameDate: date,
+          gameTime: gameTime ? time : undefined,
+        }),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (req.ok) {
+        const successResponse = req.json();
+        router.refresh();
+      } else {
+        const errorMessage = await req.json();
+        setApiError({ message: errorMessage.message });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -94,9 +122,10 @@ export default function CreateAdDialog() {
                       className="bg-zinc-400 dark:bg-black border border-zinc-800 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full mt-1"
                       id="gameDate"
                       {...field}
-                      dateFormat={"dd/MM/yyyy"}
+                      dateFormat={"EEEE, dd/MM/yyyy"}
                       onChange={(date: any) => {
                         form.setFieldValue("gameDate", date);
+                        setApiError({ message: "" });
                       }}
                       selected={field.value}
                       minDate={addDays(new Date(), 1)}
@@ -130,6 +159,9 @@ export default function CreateAdDialog() {
                   )}
                 </Field>
               </div>
+              {apiError ? (
+                <div className="mb-2 text-red-400">{apiError.message}</div>
+              ) : null}
               <button
                 type="submit"
                 className="w-full bg-emerald-400 uppercase font-bold py-3 rounded transition-all hover:bg-emerald-500 disabled:opacity-70 disabled:cursor-not-allowed mt-4"

@@ -3,10 +3,6 @@ import { JwtPayload, verify } from "jsonwebtoken";
 import Ads from "@/components/Ads";
 import { redirect } from "next/navigation";
 
-// interface decodedToken extends JwtPayload {
-//   name: string;
-//   email: string;
-// }
 
 export default function Dashboard() {
   const cookieStore = cookies();
@@ -16,6 +12,7 @@ export default function Dashboard() {
     try {
       decoded = verify(token.value, "Mena") as JwtPayload;
     } catch (err) {
+      console.log(err);
       redirect("/login");
     }
   }
