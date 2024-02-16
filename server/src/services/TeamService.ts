@@ -70,6 +70,16 @@ export class TeamService {
     });
   }
 
+  public static async getTeamByEmail(email: string): Promise<Team | null> {
+    return await prismaClient.team.findFirst({
+      where: {
+        user: {
+          email,
+        },
+      },
+    });
+  }
+
   public static async updateTeam(
     id: number,
     { name, badge, city, foundedAt, homeField, province }: Partial<TeamDTO>

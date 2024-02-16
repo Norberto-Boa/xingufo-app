@@ -3,16 +3,24 @@ import { createAdValidator } from "../validators/Ad/CreateAdValidator";
 import { AdService } from "../services/AdService";
 import { deleteAdValidator } from "../validators/Ad/DeleteAdValidator";
 import { UpdateAdValidator } from "../validators/Ad/UpdateAdValidator";
+import { decryptedToken } from "../@types/Token";
+import { TeamService } from "../services/TeamService";
 
 export async function create(
   req: Request,
   res: Response
 ): Promise<Response | never> {
-  const { teamid } = req.params;
-
   const { gameDate, gameTime, location } = createAdValidator.parse(req.body);
 
-  const teamId = Number(teamid);
+  const userData: decryptedToken = (req as any).user;
+
+  const team = await TeamService.getTeamByEmail(userData.email);
+
+  if (!team) {
+    return res.status(400).json({ messa: "Usuario nao tem equipe registada!" });
+  }
+
+  const teamId = team.id;
 
   const teamAlreadyHasAd = await AdService.getAdByTeamIdAndGameDate(
     teamId,

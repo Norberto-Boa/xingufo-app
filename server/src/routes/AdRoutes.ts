@@ -14,7 +14,7 @@ const AdRoutes = Router();
 
 AdRoutes.get("/ads", tryCatch(getAds));
 AdRoutes.get("/ads/:teamid", requireUser, tryCatch(getAllAdsByTeam));
-AdRoutes.post("/ads/:teamid", requireUser, UserOwnsTeam, tryCatch(create));
+AdRoutes.post("/ads", requireUser, tryCatch(create));
 AdRoutes.delete("/ads/:teamid", requireUser, UserOwnsTeam, tryCatch(deleteAd));
 AdRoutes.put("/ads/:teamid", requireUser, UserOwnsTeam, tryCatch(updateAd));
 
