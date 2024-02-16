@@ -4,3 +4,7 @@ export interface ApiError {
     message: string;
   };
 }
+
+export interface ApiErrorMessage {
+  message: string;
+}

@@ -13,7 +13,9 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import { addDays } from "date-fns";
 import Input from "./Input";
 import "react-datepicker/dist/react-datepicker.css";
-import pt from "date-fns/locale/pt";
+import { useState } from "react";
+import { ApiErrorMessage } from "../@types/global";
+import { convertDateToTimezone } from "@/utils/ConvertDateToTimezone";
 
 interface FormValues {
   location: string;
@@ -22,10 +24,18 @@ interface FormValues {
 }
 
 export default function CreateAdDialog() {
-  registerLocale("pt", pt);
+  const [apiError, setAPiError] = useState<ApiErrorMessage>({ message: "" });
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const initialValues: FormValues = {
     location: "",
+  };
+
+  const handleSubmit = async ({ location, gameDate, gameTime }: FormValues) => {
+    if (gameDate && gameTime) {
+      const Date = convertDateToTimezone(gameDate);
+      console.log(Date);
+    }
   };
 
   return (
@@ -52,9 +62,12 @@ export default function CreateAdDialog() {
 
           <Formik
             initialValues={initialValues}
-            onSubmit={(values, actions) => console.log(values)}
+            onSubmit={(values, actions) => {
+              handleSubmit(values);
+              actions.setSubmitting(false);
+            }}
           >
-            <Form>
+            <Form autoComplete="off">
               {/* Location Input  */}
               <Input
                 label="Localização do Jogo"
@@ -62,6 +75,7 @@ export default function CreateAdDialog() {
                 name="location"
                 id="location"
                 type="text"
+                autoComplete="off"
               />
               <small className="mb-2 text-red-400">
                 A não propôr nenhuma localização não escreva nada!
@@ -110,7 +124,6 @@ export default function CreateAdDialog() {
                       {...field}
                       onChange={(time: any) => {
                         form.setFieldValue(field.name, time);
-                        console.log(time);
                       }}
                       selected={field.value}
                     />
