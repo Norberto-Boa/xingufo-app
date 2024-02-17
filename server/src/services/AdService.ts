@@ -50,6 +50,11 @@ export class AdService {
             homeField: true,
             province: true,
             badge: true,
+            user: {
+              select: {
+                email: true,
+              },
+            },
           },
         },
       },

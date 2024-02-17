@@ -11,6 +11,9 @@ export interface AdType {
     city: string;
     province: string;
     homeField: string;
+    user: {
+      email: string;
+    };
   };
   createdAt: string;
   updatedAt: string;

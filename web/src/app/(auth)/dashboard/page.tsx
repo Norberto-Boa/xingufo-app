@@ -3,6 +3,10 @@ import { JwtPayload, verify } from "jsonwebtoken";
 import Ads from "@/components/Ads";
 import { redirect } from "next/navigation";
 
+interface Payload extends JwtPayload {
+  email: string;
+  name: string;
+}
 
 export default function Dashboard() {
   const cookieStore = cookies();
@@ -10,11 +14,15 @@ export default function Dashboard() {
   let decoded;
   if (token) {
     try {
-      decoded = verify(token.value, "Mena") as JwtPayload;
+      decoded = verify(token.value, "Mena") as Payload;
     } catch (err) {
       console.log(err);
       redirect("/login");
     }
+  }
+
+  if (!decoded) {
+    redirect("/login");
   }
 
   return (
@@ -33,7 +41,7 @@ export default function Dashboard() {
       {/* Ads */}
       <div className="pl-9">
         <div className="w-full px-4 py-2 bg-zinc-600 flex justify-between">
-          <Ads />
+          <Ads userEmail={decoded.email} />
         </div>
       </div>
     </div>

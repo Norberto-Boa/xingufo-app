@@ -15,7 +15,11 @@ async function getAds(): Promise<AdType[] | []> {
   return res.json();
 }
 
-export default async function Ads() {
+interface AdsProps {
+  userEmail: string;
+}
+
+export default async function Ads({ userEmail }: AdsProps) {
   const ads = await getAds();
 
   if (ads.length <= 0) {
@@ -25,6 +29,9 @@ export default async function Ads() {
   return (
     <div className="flex gap-2">
       {ads.map((ad) => {
+        if (userEmail == ad.team.user.email) {
+          return null;
+        }
         return (
           <Ad
             badge={ad.team.badge}
