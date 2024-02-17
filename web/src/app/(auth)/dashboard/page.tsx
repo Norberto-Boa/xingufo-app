@@ -33,15 +33,23 @@ export default function Dashboard() {
           Bem-vindo,{" "}
           <span className="text-emerald-600 font-bold">{decoded?.name}</span>
         </h1>
-        <span className="mt-8 text-lg text-zinc-500 text-semibold">
+        <span className="mt-8 text-lg text-zinc-500">
           Conecte-se com os seus colegas
         </span>
       </div>
 
       {/* Ads */}
       <div className="px-9 mt-4">
-        <div className="w-full px-4 py-4 bg-zinc-900 border border-zinc-600 rounded-lg flex justify-between">
-          <Ads userEmail={decoded.email} />
+        <div className="w-full px-4 py-4 bg-zinc-900 border border-zinc-600 rounded-lg">
+          <div className="mb-3">
+            <h2 className="text-xl font-semibold">Anuncios</h2>
+            <span className="text-zinc-400">
+              Encontre aqui o seu adversario
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <Ads userEmail={decoded.email} />
+          </div>
         </div>
       </div>
     </div>
