@@ -28,7 +28,7 @@ export default function Dashboard() {
   return (
     <div>
       {/* Titutlo */}
-      <div className="pt-8 pl-9">
+      <div className="pt-8 px-9">
         <h1 className="text-2xl font-semibold">
           Bem-vindo,{" "}
           <span className="text-emerald-600 font-bold">{decoded?.name}</span>
@@ -39,8 +39,8 @@ export default function Dashboard() {
       </div>
 
       {/* Ads */}
-      <div className="pl-9">
-        <div className="w-full px-4 py-2 bg-zinc-600 flex justify-between">
+      <div className="px-9 mt-4">
+        <div className="w-full px-4 py-4 bg-zinc-900 border border-zinc-600 rounded-lg flex justify-between">
           <Ads userEmail={decoded.email} />
         </div>
       </div>

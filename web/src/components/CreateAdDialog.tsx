@@ -68,7 +68,7 @@ export default function CreateAdDialog() {
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger className="flex items-center justify-center flex-col font-bold px-2 text-center h-full border rounded-lg bg-zinc-500">
+      <Dialog.Trigger className="flex items-center justify-center flex-col font-bold px-2 text-center h-full border border-zinc-400 rounded-lg bg-zinc-700">
         <PlusCircle size={48} className="text-green-500" /> Criar um anuncio
       </Dialog.Trigger>
       <Dialog.Portal>

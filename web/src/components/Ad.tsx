@@ -12,7 +12,7 @@ interface AdProps {
 
 export default function Ad({ badge, date, time, location, name }: AdProps) {
   return (
-    <div className="bg-zinc-500 flex flex-col items-center !w-[150px] rounded-lg max-h-52 h-[220px] overflow-hidden">
+    <div className="bg-zinc-700 flex flex-col items-center !w-[150px] rounded-lg max-h-52 h-[220px] overflow-hidden">
       <div className="px-2 w-full mb-2 text-center py-1 text-white font-bold bg-green-600 text-base">
         {formatDate(date)}
       </div>
