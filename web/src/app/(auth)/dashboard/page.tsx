@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { JwtPayload, verify } from "jsonwebtoken";
 import Ads from "@/components/Ads";
 import { redirect } from "next/navigation";
+import Games from "@/components/Games";
 
 interface Payload extends JwtPayload {
   email: string;
@@ -49,6 +50,21 @@ export default function Dashboard() {
           </div>
           <div className="flex justify-between">
             <Ads userEmail={decoded.email} />
+          </div>
+        </div>
+      </div>
+
+      {/* Games */}
+      <div className="px-9 mt-4">
+        <div className="w-full px-4 py-4 bg-zinc-900 border border-zinc-600 rounded-lg">
+          <div className="mb-3">
+            <h2 className="text-xl font-semibold">Jogos</h2>
+            <span className="text-zinc-400">
+              Para Proxima semana temos 8 jogos marcados!
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <Games />
           </div>
         </div>
       </div>
