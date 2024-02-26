@@ -21,7 +21,7 @@ export async function register(req: Request, res: Response) {
   await UserService.createUser({
     name: name,
     email: email,
-    cellphone: cellphone,
+    cellphone: "+258" + cellphone,
     password: password,
   });
 
