@@ -11,6 +11,7 @@ import { UserOwnsTeam } from "../middleware/CheckIfUserOwnsTeam";
 const GameRoutes = Router();
 
 GameRoutes.get(`/games/:id`, tryCatch(getGameById));
+
 GameRoutes.get(`/games`, tryCatch(getGames));
 
 GameRoutes.delete(

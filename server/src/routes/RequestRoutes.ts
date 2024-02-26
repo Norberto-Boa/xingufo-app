@@ -17,12 +17,15 @@ RequestRoutes.post(
   tryCatch(createRequest)
 );
 
+// Update Request data
 RequestRoutes.put(
   "/requests/:teamid",
   requireUser,
   UserOwnsTeam,
   tryCatch(updateRequest)
 );
+
+// Accept Request 
 RequestRoutes.put(
   "/requests/accept/:teamid",
   requireUser,
