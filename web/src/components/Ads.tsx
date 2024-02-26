@@ -22,16 +22,12 @@ interface AdsProps {
 export default async function Ads({ userEmail }: AdsProps) {
   const ads = await getAds();
 
-  if (ads.length <= 0) {
-    return <p>Nao ha nenhum anuncio por enquanto!</p>;
-  }
-
   return (
     <div className="flex gap-2">
       {ads.map((ad) => {
-        if (userEmail == ad.team.user.email) {
-          return null;
-        }
+        // if (userEmail == ad.team.user.email) {
+        //   return null;
+        // }
         return (
           <Ad
             badge={ad.team.badge}

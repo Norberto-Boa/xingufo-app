@@ -2,21 +2,31 @@ import { gameDTO } from "@/@types/Games";
 import { addDays, isSameDay } from "date-fns";
 import { GameDTO } from "../../../server/src/@types/Game";
 
-export function SeparateGameByDates(
-  games: gameDTO[],
-  addedDay: number
-): GameDTO[] | void {
-  const today = new Date() as Date;
-  const addedDate = addDays(today, addedDay);
-
-  let selectedGames : gameDTO[] = [];
-
-
-  for (let i=0; i < games.length; i++) {
-    if(isSameDay(games[i].gameDate, addedDate)){
-      selectedGames.push(games[i]);
-    }
-  }
-
-  return selectedGames;
+interface gamesSeprated {
+  date: string;
+  games: gameDTO[];
 }
+
+
+export function separateGameByDates(games : gameDTO[]){
+  const gamesByDate : { [key : string] : gameDTO[]} = {};
+
+  games.forEach(game => {
+    const date = String(game.gameDate);
+
+    if(!gamesByDate[date]){
+      gamesByDate[date] = [];
+    }
+
+    gamesByDate[date].push(game);
+  });
+
+  const gamesSeparated: gamesSeprated[] = Object.entries(gamesByDate).map(([date, games]) => ({
+    date,
+    games
+  }))
+
+  return gamesSeparated;
+}
+
+

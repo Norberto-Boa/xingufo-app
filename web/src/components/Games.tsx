@@ -1,6 +1,6 @@
 import { gameDTO } from "@/@types/Games";
 import { baseUrl } from "@/utils/BaseUrl";
-import { SeparateGameByDates } from "@/utils/SeparateGamesByDate";
+import { separateGameByDates } from "@/utils/SeparateGamesByDate";
 import { CheckIfIsAuthenticatedOnServer } from "@/utils/ServerToken";
 
 const token = CheckIfIsAuthenticatedOnServer();
@@ -20,26 +20,30 @@ async function getGames(): Promise<gameDTO[] | []> {
 }
 
 export default async function Games() {
-  const games = await getGames();
-  let i = 0;
 
-  const gamesByDates = {
-    0: SeparateGameByDates(games, i),
-    1: SeparateGameByDates(games, i++),
-    2: SeparateGameByDates(games, i++),
-    3: SeparateGameByDates(games, i++),
-    4: SeparateGameByDates(games, i++),
-    5: SeparateGameByDates(games, i++),
-    6: SeparateGameByDates(games, i++),
+  const games = await getGames();
+
+
+  if(!games){
+    return <p>Não há jogos nos próximos dias!</p>
   }
 
-  console.log(gamesByDates);
+  const separatedGames = separateGameByDates(games);
+
+  console.log(separatedGames)
 
   return (
     <div>
-      {
-        <p>Hola</p>
-      }
+      {separatedGames.map(({date, games}) =>(
+        <div key={date}>
+          <h2>{date}</h2>
+          <ul>
+            {games.map(game => (
+              <li key={game.id}>{game.home.name} vs {game.away.name}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 }
