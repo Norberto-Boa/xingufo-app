@@ -30,8 +30,6 @@ export default async function Games() {
 
   const separatedGames = separateGameByDates(games);
 
-  console.log(separatedGames)
-
   return (
     <div>
       {separatedGames.map(({date, games}) =>(
