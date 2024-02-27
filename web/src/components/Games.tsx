@@ -2,6 +2,8 @@ import { gameDTO } from "@/@types/Games";
 import { baseUrl } from "@/utils/BaseUrl";
 import { separateGameByDates } from "@/utils/SeparateGamesByDate";
 import { CheckIfIsAuthenticatedOnServer } from "@/utils/ServerToken";
+import { GamesTitle } from "../utils/FormatDate";
+import Image from "next/image";
 
 const token = CheckIfIsAuthenticatedOnServer();
 
@@ -20,26 +22,61 @@ async function getGames(): Promise<gameDTO[] | []> {
 }
 
 export default async function Games() {
-
   const games = await getGames();
 
-
-  if(!games){
-    return <p>Não há jogos nos próximos dias!</p>
+  if (!games) {
+    return <p>Não há jogos nos próximos dias!</p>;
   }
 
   const separatedGames = separateGameByDates(games);
 
   return (
     <div>
-      {separatedGames.map(({date, games}) =>(
-        <div key={date}>
-          <h2>{date}</h2>
-          <ul>
-            {games.map(game => (
-              <li key={game.id}>{game.home.name} vs {game.away.name}</li>
+      <div className="mb-3">
+        <h2 className="text-xl font-semibold">Jogos</h2>
+        <span className="text-zinc-400">
+          Para Proxima semana temos {games.length} jogos marcados!
+        </span>
+      </div>
+
+      {separatedGames.map(({ date, games }) => (
+        <div key={date} className="py-2 px-4 bg-zinc-800 w-full rounded">
+          <h2 className="mb-2 font-bold text-lg">{GamesTitle(date)}</h2>
+          <div>
+            {games.map((game) => (
+              <div
+                key={game.id}
+                className="border border-zinc-500 p-4 rounded-full flex gap-4 items-center"
+              >
+                <div className="flex items-center gap-2 text-lg font-semibold">
+                  <Image
+                    className="rounded-full w-auto h-auto"
+                    src={game.home.badge}
+                    width={30}
+                    height={30}
+                    alt={game.home.name}
+                  />
+                  {game.home.name}
+                </div>
+
+                <div className="py-2 px-3 rounded-full bg-zinc-700 text-uppercase font-medium text-lg border border-zinc-500">
+                  vs
+                </div>
+
+                {/* Away Team */}
+                <div className="flex items-center gap-2 text-lg font-semibold">
+                  {game.away.name}
+                  <Image
+                    className="rounded-full w-auto h-auto"
+                    src={game.away.badge}
+                    width={30}
+                    height={30}
+                    alt={game.away.name}
+                  />
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       ))}
     </div>
