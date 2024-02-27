@@ -10,3 +10,9 @@ export function formatDate(date: string): string {
 export function GamesTitle(date: string | Date): string {
   return format(date,"DD, MMMM YYYY");
 }
+
+export function formatTime(date: string | Date): string {
+  return formatToTimeZone(date, "HH:mm", {
+    timeZone: "Africa/Johannesburg",
+  });
+}

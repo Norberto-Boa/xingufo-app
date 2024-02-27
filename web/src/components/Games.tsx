@@ -2,8 +2,10 @@ import { gameDTO } from "@/@types/Games";
 import { baseUrl } from "@/utils/BaseUrl";
 import { separateGameByDates } from "@/utils/SeparateGamesByDate";
 import { CheckIfIsAuthenticatedOnServer } from "@/utils/ServerToken";
-import { GamesTitle } from "../utils/FormatDate";
+import { GamesTitle, formatTime } from "../utils/FormatDate";
 import Image from "next/image";
+import Time from "./Time";
+import Location from "./Location";
 
 const token = CheckIfIsAuthenticatedOnServer();
 
@@ -48,6 +50,7 @@ export default async function Games() {
                 key={game.id}
                 className="border border-zinc-500 p-4 rounded-full flex gap-4 items-center"
               >
+                {/* Home Team */}
                 <div className="flex items-center gap-2 text-lg font-semibold">
                   <Image
                     className="rounded-full w-auto h-auto"
@@ -59,6 +62,7 @@ export default async function Games() {
                   {game.home.name}
                 </div>
 
+                {/* VS text */}
                 <div className="py-2 px-3 rounded-full bg-zinc-700 text-uppercase font-medium text-lg border border-zinc-500">
                   vs
                 </div>
@@ -74,6 +78,13 @@ export default async function Games() {
                     alt={game.away.name}
                   />
                 </div>
+
+                <div className="w-[1px] h-10 bg-zinc-200" />
+
+                {/* Location */}
+                <Location location={game.location} />
+                {/* Time */}
+                <Time gameTime={game.gameTime} />
               </div>
             ))}
           </div>
