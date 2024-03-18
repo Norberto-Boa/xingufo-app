@@ -17,7 +17,7 @@ export async function create(
   const team = await TeamService.getTeamByEmail(userData.email);
 
   if (!team) {
-    return res.status(400).json({ messa: "Usuario nao tem equipe registada!" });
+    return res.status(400).json({ message: "Usuario nao tem equipe registada!" });
   }
 
   const teamId = team.id;

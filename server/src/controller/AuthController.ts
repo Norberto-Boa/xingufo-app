@@ -5,6 +5,7 @@ import { createUserValidator } from "../validators/User/CreateUserValidator";
 import { loginUserValidator } from "../validators/User/LoginUserValidator";
 import { compare } from "bcrypt";
 import { generateAccessToken } from "../services/TokenService";
+import { decryptedToken } from "../@types/Token";
 
 export async function register(req: Request, res: Response) {
   const { name, email, password, cellphone } = createUserValidator.parse(
@@ -55,4 +56,14 @@ export async function login(req: Request, res: Response) {
   });
 }
 
-export async function getUserDetails() {}
+export async function getUserDetails(req: Request, res: Response) {
+  const userData: decryptedToken = (req as any).user;
+
+  const userDetails = await UserService.getUserByEmail(userData.email);
+
+  if (!userDetails) {
+    return res.status(404).json({ message: "Usuario nao encontrado!" });
+  }
+
+  return res.status(200).json(userDetails);
+}
