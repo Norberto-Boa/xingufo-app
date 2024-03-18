@@ -56,7 +56,7 @@ export default function Dashboard() {
 
       {/* Games */}
       <div className="px-9 mt-4">
-        <div className="w-full px-4 py-4 bg-zinc-900 border border-zinc-600 rounded-lg">
+        <div className="w-full px-4 py-4 bg-zinc-900 w border-zinc-600 rounded-lg">
           <Games />
         </div>
       </div>

@@ -25,9 +25,9 @@ export default async function Ads({ userEmail }: AdsProps) {
   return (
     <div className="flex gap-2">
       {ads.map((ad) => {
-        // if (userEmail == ad.team.user.email) {
-        //   return null;
-        // }
+        if (userEmail == ad.team.user.email) {
+          return null;
+        }
         return (
           <Ad
             badge={ad.team.badge}
