@@ -28,6 +28,7 @@ export async function register(req: Request, res: Response) {
   return res.status(201).json({ message: "You were sucessfully registered" });
 }
 
+// Function that is called when the user is logging in
 export async function login(req: Request, res: Response) {
   const { email, password } = loginUserValidator.parse(req.body);
 
@@ -53,3 +54,5 @@ export async function login(req: Request, res: Response) {
     token: token,
   });
 }
+
+export async function getUserDetails() {}

@@ -7,4 +7,5 @@ const AuthRoutes = Router();
 AuthRoutes.post("/signup", tryCatch(register));
 AuthRoutes.post("/login", tryCatch(login));
 
+
 export { AuthRoutes };

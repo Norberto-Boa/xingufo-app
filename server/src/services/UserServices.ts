@@ -62,4 +62,12 @@ export class UserService {
       return false;
     }
   }
+
+  static async getUserByEmail(email: string) {
+    return await prismaClient.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+  }
 }
