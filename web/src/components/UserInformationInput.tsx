@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, InputHTMLAttributes, useState } from "react";
 import { PencilSimpleLine } from "phosphor-react";
 import { baseUrl } from "@/utils/BaseUrl";
 import { CheckIfIsAuthenticatedOnClient } from "@/utils/Token";
+import { ApiErrorMessage } from "@/@types/global";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -16,6 +17,7 @@ export default function UserInformationInput(InputProps: InputProps) {
   const [value, setValue] = useState({
     [InputProps.name]: InputProps.value,
   });
+  const [error, setError] = useState("");
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { target } = e;
@@ -23,7 +25,6 @@ export default function UserInformationInput(InputProps: InputProps) {
       ...prevState,
       [target.name]: target.value,
     }));
-
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -31,7 +32,7 @@ export default function UserInformationInput(InputProps: InputProps) {
 
     const token = CheckIfIsAuthenticatedOnClient();
 
-    const userData = await fetch(`${baseUrl}auth/update`, {
+    const res = await fetch(`${baseUrl}auth/update`, {
       method: "PUT",
       body: JSON.stringify({
         [InputProps.name]: value[InputProps.name],
@@ -42,7 +43,13 @@ export default function UserInformationInput(InputProps: InputProps) {
       },
     });
 
-    setDisabled(!disabled);
+    if (!res.ok) {
+      const errorMessage: ApiErrorMessage = await res.json();
+      setError(errorMessage.message);
+    } else {
+      setDisabled(!disabled);
+      setError("");
+    }
   }
 
   return (
@@ -57,10 +64,15 @@ export default function UserInformationInput(InputProps: InputProps) {
         value={value[InputProps.name]}
       />
 
+      <span className="mt-2 text-red-500 text-sm">{error}</span>
+
       {disabled ? (
         <div
           className="border border-zinc-300 rounded p-1 cursor-pointer transition-all hover:bg-zinc-400"
-          onClick={() => setDisabled(!disabled)}
+          onClick={() => {
+            setDisabled(!disabled);
+            setError("");
+          }}
         >
           <PencilSimpleLine size={20} />
         </div>

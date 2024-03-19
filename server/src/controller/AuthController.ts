@@ -76,19 +76,41 @@ export async function UpdateUserData(req: Request, res: Response) {
 
   const User = await UserService.existsByEmail(userData.email);
 
+  // Check if User Exists
+  if (!User) {
+    return res.status(404).json({ message: "Usuario nao encontrado!" });
+  }
+
+  if (email) {
+    const userExistsByBodyEmail = await UserService.existsByEmail(email);
+    if (userExistsByBodyEmail) {
+      if (userExistsByBodyEmail.email == User.email) {
+        return res.status(200).json({ message: "Updated Successfully!" });
+      }
+
+      return res
+        .status(400)
+        .json({ message: "Usuario com esse email ja existe!" });
+    }
+  }
+
+  // Check if User is updating cellphone number
   if (cellphone) {
+    // Check if user with same cellphone number already exists
     const userExistsWithCellPhone = await UserService.existsByCellphone(
       cellphone
     );
+
+    // Check if User is did not change their cell phone number on update
     if (userExistsWithCellPhone) {
+      if (userExistsWithCellPhone.id == User.id) {
+        return res.status(200).json({ message: "Updated Successfully!" });
+      }
+
       return res
         .status(400)
         .json({ message: "Usuario com este numero ja existe!" });
     }
-  }
-
-  if (!User) {
-    return res.status(404).json({ message: "Usuario nao encontrado!" });
   }
 
   const updatedUser = await UserService.update(User.id, {
