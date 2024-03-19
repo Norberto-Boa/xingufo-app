@@ -2,6 +2,8 @@
 
 import { ChangeEvent, FormEvent, InputHTMLAttributes, useState } from "react";
 import { PencilSimpleLine } from "phosphor-react";
+import { baseUrl } from "@/utils/BaseUrl";
+import { CheckIfIsAuthenticatedOnClient } from "@/utils/Token";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -21,10 +23,24 @@ export default function UserInformationInput(InputProps: InputProps) {
       ...prevState,
       [target.name]: target.value,
     }));
+
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    const token = CheckIfIsAuthenticatedOnClient();
+
+    const userData = await fetch(`${baseUrl}auth/update`, {
+      method: "PUT",
+      body: JSON.stringify({
+        [InputProps.name]: value[InputProps.name],
+      }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     setDisabled(!disabled);
   }

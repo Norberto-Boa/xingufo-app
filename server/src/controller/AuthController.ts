@@ -76,12 +76,23 @@ export async function UpdateUserData(req: Request, res: Response) {
 
   const User = await UserService.existsByEmail(userData.email);
 
+  if (cellphone) {
+    const userExistsWithCellPhone = await UserService.existsByCellphone(
+      cellphone
+    );
+    if (userExistsWithCellPhone) {
+      return res
+        .status(400)
+        .json({ message: "Usuario com este numero ja existe!" });
+    }
+  }
+
   if (!User) {
     return res.status(404).json({ message: "Usuario nao encontrado!" });
   }
 
   const updatedUser = await UserService.update(User.id, {
-    cellphone: cellphone ? "+258" + cellphone : undefined,
+    cellphone: cellphone,
     email,
     name,
   });

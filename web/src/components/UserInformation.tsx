@@ -11,8 +11,7 @@ interface UserDetailsDTO {
 }
 
 async function getUserInformation(): Promise<UserDetailsDTO> {
-  const cookieStore = cookies();
-  const token = cookieStore.get("auth.token");
+  const token = CheckIfIsAuthenticatedOnServer();
 
   if (!token) {
     redirect("/login");
@@ -20,7 +19,7 @@ async function getUserInformation(): Promise<UserDetailsDTO> {
 
   const res = await fetch(`${baseUrl}userinfo`, {
     headers: {
-      Authorization: "Bearer " + token.value,
+      Authorization: "Bearer " + token,
     },
   });
 
@@ -49,8 +48,8 @@ export default async function UserInformation() {
         <UserInformationInput
           label="Name"
           type="text"
-          name="Name"
-          id="Name"
+          name="name"
+          id="name"
           value={userInformation.name}
         />
         <UserInformationInput
