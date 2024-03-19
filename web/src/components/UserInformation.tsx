@@ -54,17 +54,17 @@ export default async function UserInformation() {
           value={userInformation.name}
         />
         <UserInformationInput
-          label="Name"
+          label="Email"
           type="text"
-          name="Name"
-          id="Name"
+          name="email"
+          id="email"
           value={userInformation.email}
         />
         <UserInformationInput
-          label="Name"
+          label="Cellphone"
           type="text"
-          name="Name"
-          id="Name"
+          name="cellphone"
+          id="cellphone"
           value={userInformation.cellphone}
         />
       </div>
