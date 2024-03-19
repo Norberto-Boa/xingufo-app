@@ -68,6 +68,27 @@ export class UserService {
       where: {
         email: email,
       },
+      select: {
+        name: true,
+        email: true,
+        cellphone: true,
+      },
+    });
+  }
+
+  static async update(
+    id: number,
+    { name, cellphone, email }: Partial<UserDTO>
+  ) {
+    return await prismaClient.user.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        cellphone,
+        email,
+      },
     });
   }
 }

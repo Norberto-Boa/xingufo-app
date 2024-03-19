@@ -6,6 +6,7 @@ import { loginUserValidator } from "../validators/User/LoginUserValidator";
 import { compare } from "bcrypt";
 import { generateAccessToken } from "../services/TokenService";
 import { decryptedToken } from "../@types/Token";
+import { editUserValidator } from "../validators/User/EditUserValidator";
 
 export async function register(req: Request, res: Response) {
   const { name, email, password, cellphone } = createUserValidator.parse(
@@ -66,4 +67,24 @@ export async function getUserDetails(req: Request, res: Response) {
   }
 
   return res.status(200).json(userDetails);
+}
+
+export async function UpdateUserData(req: Request, res: Response) {
+  const { cellphone, email, name } = editUserValidator.parse(req.body);
+
+  const userData: decryptedToken = (req as any).user;
+
+  const User = await UserService.existsByEmail(userData.email);
+
+  if (!User) {
+    return res.status(404).json({ message: "Usuario nao encontrado!" });
+  }
+
+  const updatedUser = await UserService.update(User.id, {
+    cellphone: cellphone ? "+258" + cellphone : undefined,
+    email,
+    name,
+  });
+
+  return res.status(201).json(updatedUser);
 }
