@@ -52,13 +52,7 @@ export default async function UserInformation() {
           id="name"
           value={userInformation.name}
         />
-        <UserInformationInput
-          label="Email"
-          type="text"
-          name="email"
-          id="email"
-          value={userInformation.email}
-        />
+
         <UserInformationInput
           label="Cellphone"
           type="text"
