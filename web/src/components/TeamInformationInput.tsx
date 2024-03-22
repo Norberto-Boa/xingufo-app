@@ -5,6 +5,7 @@ import { PencilSimpleLine } from "phosphor-react";
 import { baseUrl } from "@/utils/BaseUrl";
 import { CheckIfIsAuthenticatedOnClient } from "@/utils/Token";
 import { ApiErrorMessage } from "@/@types/global";
+import Datepicker from "./Datepicker";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -19,6 +20,13 @@ export default function TeamInformationInput(InputProps: InputProps) {
     [InputProps.name]: InputProps.value,
   });
   const [error, setError] = useState("");
+
+  function handleDateChange(date: Date, e: ChangeEvent<HTMLInputElement>) {
+    setValue((prevState) => ({
+      ...prevState,
+      [InputProps.name]: new Date(date).toISOString(),
+    }));
+  }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { target } = e;
@@ -62,17 +70,27 @@ export default function TeamInformationInput(InputProps: InputProps) {
         {InputProps.label}
       </label>
       <div className="col-span-8">
-        <input
-          name={InputProps.name}
-          id={InputProps.id}
-          disabled={disabled}
-          className="w-full rounded py-1 px-2 mr-3 text-slate-900 block"
-          onChange={handleChange}
-          value={value[InputProps.name]}
-          type={InputProps?.type}
-          required
-        />
-
+        {InputProps.type !== "date" ? (
+          <input
+            name={InputProps.name}
+            id={InputProps.id}
+            disabled={disabled}
+            className="w-full rounded py-1 px-2 mr-3 text-slate-900 block"
+            onChange={handleChange}
+            value={value[InputProps.name]}
+            type={InputProps?.type}
+            required
+          />
+        ) : (
+          <Datepicker
+            id={InputProps.id}
+            name={InputProps.name}
+            onChange={handleDateChange}
+            disabled={disabled}
+            onSelect={handleDateChange}
+            selected={new Date(value[InputProps.name])}
+          />
+        )}
         <span className="mt-2 text-red-500 text-sm">{error}</span>
       </div>
 

@@ -2,7 +2,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Field, FieldProps, Form, Formik } from "formik";
 import { PlusCircle, X } from "phosphor-react";
-import DatePicker, { registerLocale } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import { addDays } from "date-fns";
 import Input from "./Input";
 import "react-datepicker/dist/react-datepicker.css";
