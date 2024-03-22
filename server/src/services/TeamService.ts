@@ -84,7 +84,7 @@ export class TeamService {
     id: number,
     { name, badge, city, foundedAt, homeField, province }: Partial<TeamDTO>
   ): Promise<Team | null> {
-    return prismaClient.team.update({
+    return await prismaClient.team.update({
       where: {
         id,
       },

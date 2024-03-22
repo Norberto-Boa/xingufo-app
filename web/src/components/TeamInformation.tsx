@@ -2,7 +2,7 @@ import { ApiErrorMessage } from "@/@types/global";
 import { baseUrl } from "@/utils/BaseUrl";
 import { CheckIfIsAuthenticatedOnServer } from "@/utils/ServerToken";
 import { redirect } from "next/navigation";
-import UserInformationInput from "./UserInformationInput";
+import TeamInformationInput from "./TeamInformationInput";
 
 interface TeamDTO {
   id: string;
@@ -41,36 +41,40 @@ export default async function TeamInformation() {
     <div>
       <div className="mb-3 flex justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Informações Pessoais</h2>
+          <h2 className="text-xl font-semibold">Informações da Equipe</h2>
           <span className="text-zinc-400">
-            Os teus dados pessoais colectados pela plataforma
+            Estes sao os dados da sua equipe
           </span>
         </div>
       </div>
       {team ? (
         <div>
-          <UserInformationInput
+          <TeamInformationInput
+            teamid={team.id}
             label="Name"
             name="name"
             value={team.name}
             type="text"
             id="name"
           />
-          <UserInformationInput
+          <TeamInformationInput
+            teamid={team.id}
             label="Campo"
             name="homeField"
             value={team.homeField}
             type="text"
             id="homeField"
           />
-          <UserInformationInput
+          <TeamInformationInput
+            teamid={team.id}
             label="Provincia"
             name="province"
             value={team.province}
             type="text"
             id="province"
           />
-          <UserInformationInput
+          <TeamInformationInput
+            teamid={team.id}
             label="Cidade"
             name="city"
             value={team.city}
@@ -78,12 +82,13 @@ export default async function TeamInformation() {
             id="city"
           />
 
-          <UserInformationInput
+          <TeamInformationInput
+            teamid={team.id}
             label="Fundado em"
             name="foundedAt"
             defaultValue={team.foundedAt}
             value={team.foundedAt}
-            type="datetime-local"
+            type="date"
             id="foundedAt"
           />
         </div>

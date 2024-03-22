@@ -35,7 +35,7 @@ TeamRoutes.get("/teams/user/:id", requireUser, tryCatch(getTeamByUser));
 
 // Edit a Team
 TeamRoutes.put(
-  "/teams/:id",
+  "/teams/:teamid",
   requireUser,
   UserOwnsTeam,
   tryCatch(updateUserTeam)

@@ -115,13 +115,13 @@ export async function updateUserTeam(
   res: Response
 ): Promise<Response | never> {
   // Fetch the team id
-  const { id } = req.params;
+  const { teamid } = req.params;
 
   // Validate the fields
   const { name, badge, city, foundedAt, homeField, province } =
     createTeamValidator.partial().parse(req.body);
 
-  const updatedTeam = await TeamService.updateTeam(Number(id), {
+  const updatedTeam = await TeamService.updateTeam(Number(teamid), {
     name,
     badge,
     city,
