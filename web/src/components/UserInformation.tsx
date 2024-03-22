@@ -19,7 +19,7 @@ async function getUserInformation(): Promise<UserDetailsDTO> {
 
   const res = await fetch(`${baseUrl}userinfo`, {
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: "Bearer " + token.token,
     },
   });
 

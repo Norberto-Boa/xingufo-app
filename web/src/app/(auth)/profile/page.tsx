@@ -1,3 +1,4 @@
+import TeamInformation from "@/components/TeamInformation";
 import UserInformation from "@/components/UserInformation";
 
 export default function Profile() {
@@ -13,8 +14,12 @@ export default function Profile() {
 
       {/* User Information */}
       <div className="px-9 mt-4">
-        <div className="w-full px-4 py-4 bg-zinc-900 w border-zinc-600 rounded-lg">
+        <div className="w-full px-4 py-4 bg-zinc-900 w border-zinc-600 rounded-lg mb-4">
           <UserInformation />
+        </div>
+
+        <div className="w-full px-4 py-4 bg-zinc-900 w border-zinc-600 rounded-lg">
+          <TeamInformation />
         </div>
       </div>
     </div>

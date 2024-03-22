@@ -89,6 +89,27 @@ export async function getTeamByUser(
   return res.status(200).json(team);
 }
 
+export async function getTeamByEmail(
+  req: Request,
+  res: Response
+): Promise<Response | undefined> {
+  const { email } = req.params;
+
+  const user = await UserService.getUserByEmail(email);
+
+  if (!user) {
+    return res.status(404).json({ message: "Usuario não encontrado!" });
+  }
+
+  const team = await TeamService.getTeamByEmail(email);
+
+  // if (!team) {
+  //   return res.status(404).json({ message: "Equipe não encontrada!" });
+  // }
+
+  return res.status(200).json(team);
+}
+
 export async function updateUserTeam(
   req: Request,
   res: Response

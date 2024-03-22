@@ -65,6 +65,8 @@ export default function UserInformationInput(InputProps: InputProps) {
           className="w-full rounded py-1 px-2 mr-3 text-slate-900 block"
           onChange={handleChange}
           value={value[InputProps.name]}
+          type={InputProps?.type}
+          required
         />
 
         <span className="mt-2 text-red-500 text-sm">{error}</span>

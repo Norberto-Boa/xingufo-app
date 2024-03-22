@@ -3,6 +3,7 @@ import {
   create,
   deleteTeam,
   getAllTeams,
+  getTeamByEmail,
   getTeamById,
   getTeamByUser,
   updateUserTeam,
@@ -21,6 +22,13 @@ TeamRoutes.get("/teams", requireUser, tryCatch(getAllTeams));
 
 // Get Team By Id
 TeamRoutes.get("/teams/:id", requireUser, tryCatch(getTeamById));
+
+// Get Team By User Id
+TeamRoutes.get(
+  "/teams/user/email/:email",
+  requireUser,
+  tryCatch(getTeamByEmail)
+);
 
 // Get Team By User Id
 TeamRoutes.get("/teams/user/:id", requireUser, tryCatch(getTeamByUser));
