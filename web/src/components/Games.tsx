@@ -6,6 +6,7 @@ import { GamesTitle, formatTime } from "../utils/FormatDate";
 import Image from "next/image";
 import Time from "./Time";
 import Location from "./Location";
+import { redirect } from "next/navigation";
 
 const token = CheckIfIsAuthenticatedOnServer();
 

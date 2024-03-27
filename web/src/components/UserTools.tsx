@@ -1,15 +1,26 @@
 "use client";
-import { Bell, Gear } from "phosphor-react";
+import { logOut } from "@/app/actions/auth";
+import { redirect } from "next/navigation";
+import { destroyCookie } from "nookies";
+
+const deleteCookie = () => {
+  destroyCookie(null, "auth.token");
+  console.log("deleteCookie");
+}
 
 export default function UserTools() {
   return (
     <div className="flex gap-3 h-12 justify-end">
-      <div className=" w-12 h-full border-2 rounded-full border-zinc-600 p-2 flex items-center justify-center">
-        <Bell size={24} weight="fill" />
+      <div className=" w-12 h-full border-2 rounded-full border-zinc-600 p-1 flex items-center justify-center">
       </div>
 
-      <div className=" w-12 h-full border-2 rounded-full border-zinc-600 p-2 flex items-center justify-center">
-        <Gear size={24} weight="fill" />
+      <div 
+        className=" w-12 h-full border-2 rounded-full border-zinc-600 p-1 flex items-center justify-center cursor-pointer"
+        onClick={deleteCookie}
+      >
+        <form action={logOut}>
+          <button type="submit">Sign Out</button>
+        </form>
       </div>
 
       <div className="h-full flex gap-2 justify-center">

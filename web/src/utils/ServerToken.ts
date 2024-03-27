@@ -13,7 +13,7 @@ export function CheckIfIsAuthenticatedOnServer():
       decoded = verify(token.value, "Mena") as JwtPayload;
       return { token: token.value, decoded: decoded };
     } catch (err) {
-      redirect("/login");
+      return; 
     }
   }
 }

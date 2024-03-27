@@ -1,9 +1,15 @@
 import Sidebar from "@/components/Sidebar";
-import Logo from "@/assets/Logo.svg";
-import Image from "next/image";
 import Rightbar from "@/components/RightBar";
+import { CheckIfIsAuthenticatedOnServer } from "@/utils/ServerToken";
+import { redirect } from "next/navigation";
+
+const token = CheckIfIsAuthenticatedOnServer();
 
 export default function Auth({ children }: { children: React.ReactNode }) {
+  if(!token){
+    redirect('/login');
+  }
+
   return (
     <section className="flex">
       <Sidebar />

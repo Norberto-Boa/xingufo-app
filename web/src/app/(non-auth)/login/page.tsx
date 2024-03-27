@@ -1,12 +1,10 @@
 "use client";
 import Input from "@/components/Input";
-import { baseUrl } from "@/utils/BaseUrl";
 import { ErrorMessage, Form, Formik, FormikErrors } from "formik";
 import Link from "next/link";
-import { ApiError } from "@/@types/global";
+import { ApiErrorMessage } from "@/@types/global";
 import { useState } from "react";
-import { setCookie } from "nookies";
-import { useRouter } from "next/navigation";
+import { login } from "@/app/actions/auth";
 
 interface FormValues {
   email: string;
@@ -39,7 +37,6 @@ const validate = ({ email, password }: FormValues) => {
 export default function Register() {
   const [apiErrors, setApiErrors] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const router = useRouter();
 
   const initialValues: FormValues = {
     email: "",
@@ -49,29 +46,11 @@ export default function Register() {
   const handleSubmit = async ({ email, password }: FormValues) => {
     setIsSubmitting(true);
     setApiErrors("");
-    try {
-      const req = await fetch(baseUrl + "login", {
-        method: "POST",
-        body: JSON.stringify({ email: email, password: password }),
-        headers: {
-          "content-type": "application/json",
-        },
-      });
+    const req = await login({email, password});
 
-      if (req.ok) {
-        const successResponse: LoginSuccess = await req.json();
-        setCookie(undefined, "auth.token", successResponse.token);
-        // setIsSubmitting(false);
-        router.push("dashboard");
-      } else {
-        const errorMessage: ApiError = await req.json();
-        throw new Error(errorMessage.error.message);
-      }
-    } catch (e: any) {
-      setTimeout(() => {
-        setApiErrors(e.message);
-        setIsSubmitting(false);
-      }, 1000);
+    if(req){
+      setApiErrors(req.message);
+      setIsSubmitting(false);
     }
   };
 
