@@ -1,19 +1,20 @@
 import { JwtPayload, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export function CheckIfIsAuthenticatedOnServer():
-  | { token: string; decoded: JwtPayload }
+  | { token: string; decoded: JwtPayload | string }
   | undefined {
   const cookieStore = cookies();
   const token = cookieStore.get("auth.token");
-  let decoded;
   if (token) {
     try {
-      decoded = verify(token.value, "Mena") as JwtPayload;
-      return { token: token.value, decoded: decoded };
-    } catch (err) {
-      return; 
+      const verified = verify(token.value, "Mena");
+
+      return { token: token.value, decoded: verified };
+    } catch (error) {
+      return;
     }
   }
+
+  return;
 }

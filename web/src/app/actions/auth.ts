@@ -5,7 +5,7 @@ import { baseUrl } from "@/utils/BaseUrl";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function logOut(){
+export async function logOut() {
   cookies().delete('auth.token');
   redirect('/login');
 }
@@ -20,7 +20,9 @@ interface LoginSuccess {
   token: string;
 }
 
-export async function login({email, password}: FormValues){
+export async function login({ email, password }: FormValues) {
+  const _cookies = cookies();
+
   const req = await fetch(baseUrl + "login", {
     method: "POST",
     body: JSON.stringify({ email: email, password: password }),
@@ -28,6 +30,7 @@ export async function login({email, password}: FormValues){
       "content-type": "application/json",
     },
   });
+
 
   if (req.ok) {
     const successResponse: LoginSuccess = await req.json();
@@ -40,6 +43,6 @@ export async function login({email, password}: FormValues){
     redirect("/dashboard");
   } else {
     const errorMessage: ApiError = await req.json();
-    return {message: errorMessage.error.message};
+    return { message: errorMessage.error.message };
   }
 }

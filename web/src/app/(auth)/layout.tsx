@@ -3,9 +3,10 @@ import Rightbar from "@/components/RightBar";
 import { CheckIfIsAuthenticatedOnServer } from "@/utils/ServerToken";
 import { redirect } from "next/navigation";
 
-const token = CheckIfIsAuthenticatedOnServer();
 
 export default function Auth({ children }: { children: React.ReactNode }) {
+  const token = CheckIfIsAuthenticatedOnServer();
+  console.log(token);
   if(!token){
     redirect('/login');
   }

@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { JwtPayload, verify } from "jsonwebtoken";
 import Ads from "@/components/Ads";
 import { redirect } from "next/navigation";
@@ -14,10 +13,10 @@ const token = CheckIfIsAuthenticatedOnServer();
 
 export default function Dashboard() {
   let decoded;
-  if (token) {
-    decoded = token.decoded;
-  }
 
+  if (token) {
+    decoded = token.decoded as Payload;
+  }
   if (!decoded) {
     redirect("/login");
   }
