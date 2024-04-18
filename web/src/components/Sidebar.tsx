@@ -1,5 +1,7 @@
 import Logo from "@/assets/Logo.svg";
 import Image from "next/image";
+import { House } from "phosphor-react";
+import { MenuItem } from "./MenuItem";
 
 export default function Sidebar() {
   return (
@@ -15,13 +17,13 @@ export default function Sidebar() {
 
       {/* Menu List */}
       <div className="flex flex-col gap-4 pt-4">
-        {/* <MenuItem
+        <MenuItem
           name='Home'
           url='#'
           status={true}
-          icon = {<House size={24} weight="fill" />}
         />
-        
+
+        {/*
         <MenuItem
           name='Minha Equipe'
           url='#'

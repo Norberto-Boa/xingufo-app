@@ -1,7 +1,7 @@
 "use client";
 import { logOut } from "@/app/actions/auth";
-import { redirect } from "next/navigation";
 import { destroyCookie } from "nookies";
+import Link from "next/link";
 
 const deleteCookie = () => {
   destroyCookie(null, "auth.token");
@@ -10,7 +10,10 @@ const deleteCookie = () => {
 export default function UserTools() {
   return (
     <div className="flex gap-3 h-12 justify-end">
-      <div className=" w-12 h-full border-2 rounded-full border-zinc-600 p-1 flex items-center justify-center">
+      <div
+        className=" w-12 h-full border-2 rounded-full border-zinc-600 p-1 flex items-center justify-center"
+      >
+        <Link href={"/profile"}>Profile</Link>
       </div>
 
       <div

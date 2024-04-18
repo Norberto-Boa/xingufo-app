@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
+    "clsx": "^2.1.0",
     "date-fns-timezone": "^0.1.4",
     "formik": "^2.4.5",
     "jsonwebtoken": "^8.5.1",
