@@ -3,6 +3,7 @@ import Ads from "@/components/Ads";
 import { redirect } from "next/navigation";
 import Games from "@/components/Games";
 import { CheckIfIsAuthenticatedOnServer } from "@/utils/ServerToken";
+import { cookies } from "next/headers";
 
 interface Payload extends JwtPayload {
   email: string;
@@ -27,7 +28,7 @@ export default function Dashboard() {
       <div className="pt-8 px-9">
         <h1 className="text-2xl font-semibold">
           Bem-vindo,{" "}
-          <span className="text-emerald-600 font-bold">{decoded.name}</span>
+          <span className="text-emerald-600 font-bold capitalize">{decoded.name}</span>
         </h1>
         <span className="mt-8 text-lg text-zinc-500">
           Conecte-se com os seus colegas

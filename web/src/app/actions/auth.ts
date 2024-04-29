@@ -2,6 +2,7 @@
 
 import { ApiError } from "@/@types/global";
 import { baseUrl } from "@/utils/BaseUrl";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -21,7 +22,7 @@ interface LoginSuccess {
 }
 
 export async function login({ email, password }: FormValues) {
-  const _cookies = cookies();
+  cookies().delete("auth.token");
 
   const req = await fetch(baseUrl + "login", {
     method: "POST",
@@ -32,6 +33,7 @@ export async function login({ email, password }: FormValues) {
   });
 
 
+
   if (req.ok) {
     const successResponse: LoginSuccess = await req.json();
     cookies().set({
@@ -40,6 +42,7 @@ export async function login({ email, password }: FormValues) {
       path: "/"
     });
 
+    revalidatePath("/");
     redirect("/dashboard");
   } else {
     const errorMessage: ApiError = await req.json();

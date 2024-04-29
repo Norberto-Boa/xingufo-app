@@ -1,8 +1,6 @@
 import { AdType } from "@/@types/Ads";
 import { baseUrl } from "@/utils/BaseUrl";
-import * as Dialog from "@radix-ui/react-dialog";
 import Ad from "./Ad";
-import { PlusCircle } from "phosphor-react";
 import CreateAdDialog from "./CreateAdDialog";
 
 async function getAds(): Promise<AdType[] | []> {
@@ -25,7 +23,7 @@ export default async function Ads({ userEmail }: AdsProps) {
   return (
     <div className="flex gap-2">
       {ads.map((ad) => {
-        if (userEmail == ad.team.user.email) {
+        if (userEmail === ad.team.user.email) {
           return null;
         }
         return (

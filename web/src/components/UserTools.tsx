@@ -3,7 +3,7 @@ import { logOut } from "@/app/actions/auth";
 import { destroyCookie } from "nookies";
 import Link from "next/link";
 
-const deleteCookie = () => {
+const deleteCookie = async () => {
   destroyCookie(null, "auth.token");
 }
 

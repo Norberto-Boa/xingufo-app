@@ -5,6 +5,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
+
 export default function Input(props: InputProps) {
   return (
     <div className="mb-2">

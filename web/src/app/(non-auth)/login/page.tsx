@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ApiErrorMessage } from "@/@types/global";
 import { useState } from "react";
 import { login } from "@/app/actions/auth";
+import { parseCookies } from "nookies";
 
 interface FormValues {
   email: string;
@@ -33,10 +34,15 @@ const validate = ({ email, password }: FormValues) => {
   return errors;
 };
 
+
+
 // Function
 export default function Register() {
   const [apiErrors, setApiErrors] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const cookies = parseCookies();
+  console.log(cookies);
 
   const initialValues: FormValues = {
     email: "",
@@ -46,9 +52,9 @@ export default function Register() {
   const handleSubmit = async ({ email, password }: FormValues) => {
     setIsSubmitting(true);
     setApiErrors("");
-    const req = await login({email, password});
+    const req = await login({ email, password });
 
-    if(req){
+    if (req) {
       setApiErrors(req.message);
       setIsSubmitting(false);
     }
