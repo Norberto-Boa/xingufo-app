@@ -4,13 +4,17 @@ import Ad from "./Ad";
 import CreateAdDialog from "./CreateAdDialog";
 
 async function getAds(): Promise<AdType[] | []> {
-  const res = await fetch(`${baseUrl}ads`);
+  const res = await fetch(`${baseUrl}ads`, {
+    next: {
+      revalidate: 30,
+    }
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data!");
   }
 
-  return res.json();
+  return await res.json();
 }
 
 interface AdsProps {
@@ -24,7 +28,7 @@ export default async function Ads({ userEmail }: AdsProps) {
     <div className="flex gap-2">
       {ads.map((ad) => {
         if (userEmail === ad.team.user.email) {
-          return null;
+          return <p key={ad.id}> None</p>;
         }
         return (
           <Ad
